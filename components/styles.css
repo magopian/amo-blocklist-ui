@@ -1,0 +1,25 @@
+body {
+  font-family: Arial, sans;
+}
+
+.form {
+  background: #fff;
+  padding: 1em;
+}
+
+.form-row {
+  padding-top: 1em;
+}
+
+.form-row label {
+  display: block;
+  width: 350px;
+}
+
+.form-row input[type=text] {
+  width: 350px;
+}
+
+.form-row select {
+  display: block;
+}
