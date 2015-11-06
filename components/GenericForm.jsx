@@ -93,16 +93,18 @@ class TextField extends React.Component {
   }
 }
 
-function renderField(name, desc, updateFieldValue) {
+function renderField(name, index, desc, updateFieldValue) {
   if (desc.type === "string") {
     if (Array.isArray(desc.enum)) {
       return <SelectField
+        key={index}
         label={desc.description}
         name={name}
         options={desc.enum}
         updateFieldValue={updateFieldValue} />;
     }
     return <TextField label={desc.description}
+             key={index}
              placeholder={desc.description}
              name={name}
              updateFieldValue={updateFieldValue} />;
@@ -110,6 +112,7 @@ function renderField(name, desc, updateFieldValue) {
   if (desc.type === "array") {
     if (desc.items.type === "string") {
       return <StringListField
+        key={index}
         label={desc.description}
         name={name}
         updateFieldValue={updateFieldValue} />;
@@ -140,9 +143,9 @@ export default class GenericForm extends React.Component {
     return (
       <form className="form" onSubmit={this.onSubmit.bind(this)}>
         <div>{
-          Object.keys(this.props.schema.properties).map(name => {
+          Object.keys(this.props.schema.properties).map((name, index) => {
             const constraints = this.props.schema.properties[name];
-            return renderField(name, constraints, updateFieldValue);
+            return renderField(name, index, constraints, updateFieldValue);
           })
         }</div>
         <p>
