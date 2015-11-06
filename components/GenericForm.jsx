@@ -24,16 +24,26 @@ class StringListField extends React.Component {
     event.preventDefault();
     this.setState({items: this.state.items.concat("")});
   }
+  
+  asyncSetState(state) {
+    // ensure state is propagated to parent component when it's actually set
+    this.setState(state, () => {
+      this.props.updateFieldValue(this.props.name, this.state.items);
+    });
+  }
 
   onChange(index, event) {
-    const items = this.state.items.map((item, i) => {
-      if (index === i) {
-        return event.target.value;
-      }
-      return item;
+    this.asyncSetState({
+      items: this.state.items.map((item, i) => {
+        return index === i ? event.target.value : item;
+      })
     });
-    this.setState({items: items}, () => {
-      this.props.updateFieldValue(this.props.name, this.state.items);
+  }
+  
+  onDropClick(index, event) {
+    event.preventDefault();
+    this.asyncSetState({
+      items: this.state.items.filter((_, i) => i !== index)
     });
   }
 
@@ -43,11 +53,15 @@ class StringListField extends React.Component {
         <label>{this.props.label}</label>
         <div>{
           this.state.items.map((item, i) => {
-            return <input
-              key={i}
-              type="text"
-              value={item}
-              onChange={this.onChange.bind(this, i)} />;
+            return <div>
+              <input
+                key={i}
+                type="text"
+                value={item}
+                onChange={this.onChange.bind(this, i)} />
+              <button type="button" 
+                      onClick={this.onDropClick.bind(this, i)}>-</button>
+            </div>;
           })
         }</div>
         <button type="button" onClick={this.onAddClick.bind(this)}>+</button>
