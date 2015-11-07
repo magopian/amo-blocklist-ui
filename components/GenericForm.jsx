@@ -14,65 +14,26 @@ class Field extends React.Component {
   }
 }
 
-class StringListField extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {items: []};
-  }
-
-  onAddClick(event) {
-    event.preventDefault();
-    this.setState({items: this.state.items.concat("")});
-  }
-  
-  asyncSetState(state) {
-    // ensure state is propagated to parent component when it's actually set
-    this.setState(state, () => {
-      this.props.updateFieldValue(this.props.name, this.state.items);
-    });
-  }
-
-  onChange(index, event) {
-    this.asyncSetState({
-      items: this.state.items.map((item, i) => {
-        return index === i ? event.target.value : item;
-      })
-    });
-  }
-  
-  onDropClick(index, event) {
-    event.preventDefault();
-    this.asyncSetState({
-      items: this.state.items.filter((_, i) => i !== index)
-    });
+class TextField extends React.Component {
+  onChange(event) {
+    this.props.onChange(event.target.value);
   }
 
   render() {
     return (
-      <div className="form-row">
-        <label>{this.props.label}</label>
-        <div>{
-          this.state.items.map((item, i) => {
-            return <div>
-              <input
-                key={i}
-                type="text"
-                value={item}
-                onChange={this.onChange.bind(this, i)} />
-              <button type="button" 
-                      onClick={this.onDropClick.bind(this, i)}>-</button>
-            </div>;
-          })
-        }</div>
-        <button type="button" onClick={this.onAddClick.bind(this)}>+</button>
-      </div>
+      <Field label={this.props.label}>
+        <input type="text"
+          value={this.props.value}
+          placeholder={this.props.placeholder}
+          onChange={this.onChange.bind(this)} />
+      </Field>
     );
   }
 }
 
 class SelectField extends React.Component {
   onChange(event) {
-    this.props.updateFieldValue(this.props.name, event.target.value);
+    this.props.onChange(event.target.value);
   }
 
   render() {
@@ -88,51 +49,124 @@ class SelectField extends React.Component {
   }
 }
 
-class TextField extends React.Component {
-  onChange(event) {
-    this.props.updateFieldValue(this.props.name, event.target.value);
+class UnsupportedField extends React.Component {
+  render() {
+    // XXX render json as string so dev can inspect faulty subschema
+    return <div className="unsupported-field">
+      Unsupported field type {this.props.schema.type || "unknown"}
+    </div>;
+  }
+}
+
+class SchemaField extends React.Component {
+  render() {
+    switch (this.props.schema.type) {
+    case "string": 
+      return <StringField {...this.props} />;
+    case "array": 
+      return <ArrayField  {...this.props} />;
+    case "object":
+      return <ObjectField  {...this.props} />;
+    default:
+      return <UnsupportedField schema={this.props.schema} />;
+    }
+  }
+}
+
+class StringField extends React.Component {
+  render() {
+    const schema = this.props.schema;
+    if (Array.isArray(schema.enum)) {
+      return <SelectField label={schema.description}
+        options={schema.enum}
+        onChange={this.props.onChange.bind(this)} />;
+    }
+    return <TextField label={schema.description}
+             placeholder={schema.description}
+             onChange={this.props.onChange.bind(this)} />;
+  }
+}
+
+class ArrayField extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {items: []};
+  }
+
+  onAddClick(event) {
+    event.preventDefault();
+    this.setState({items: this.state.items.concat("")});
+  }
+  
+  asyncSetState(state) {
+    // ensure state is propagated to parent component when it's actually set
+    this.setState(state, _ => this.props.onChange(this.state.items));
+  }
+
+  onChange(index, value) {
+    this.asyncSetState({
+      items: this.state.items.map((item, i) => {
+        return index === i ? value : item;
+      })
+    });
+  }
+  
+  onDropClick(index, event) {
+    event.preventDefault();
+    this.asyncSetState({
+      items: this.state.items.filter((_, i) => i !== index)
+    });
   }
 
   render() {
+    const schema = this.props.schema;
     return (
-      <Field label={this.props.label}>
-        <input
-          type="text"
-          name={this.props.name}
-          value={this.props.value}
-          placeholder={this.props.placeholder}
-          onChange={this.onChange.bind(this)} />
-      </Field>
+      <div className="form-row">
+        <label>{schema.description}</label>
+        <div>{
+          this.state.items.map((item, index) => {
+            return <div key={index}>
+              <SchemaField schema={schema.items} 
+                onChange={this.onChange.bind(this, index)} />
+              <button type="button" 
+                onClick={this.onDropClick.bind(this, index)}>-</button>
+            </div>;
+          })
+        }</div>
+        <button type="button" onClick={this.onAddClick.bind(this)}>+</button>
+      </div>
     );
   }
 }
 
-function renderField(name, index, desc, updateFieldValue) {
-  if (desc.type === "string") {
-    if (Array.isArray(desc.enum)) {
-      return <SelectField
-        key={index}
-        label={desc.description}
-        name={name}
-        options={desc.enum}
-        updateFieldValue={updateFieldValue} />;
-    }
-    return <TextField label={desc.description}
-             key={index}
-             placeholder={desc.description}
-             name={name}
-             updateFieldValue={updateFieldValue} />;
+class ObjectField extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
   }
-  if (desc.type === "array") {
-    if (desc.items.type === "string") {
-      return <StringListField
-        key={index}
-        label={desc.description}
-        name={name}
-        updateFieldValue={updateFieldValue} />;
-    }
+  
+  asyncSetState(state) {
+    // ensure state is propagated to parent component when it's actually set
+    this.setState(state, _ => this.props.onChange(this.state));
   }
-  return null;
+  
+  onChange(name, value) {
+    this.asyncSetState({[name]: value});
+  }
+  
+  render() {
+    const schema = this.props.schema;
+    return <fieldset>
+    <legend>{schema.description}</legend>
+      {
+      Object.keys(schema.properties).map((name, index) => {
+        return <SchemaField key={index} 
+          name={name} 
+          schema={schema.properties[name]}
+          onChange={this.onChange.bind(this, name)} />;
+      })
+    }</fieldset>;
+  }
 }
 
 export default class GenericForm extends React.Component {
@@ -141,8 +175,8 @@ export default class GenericForm extends React.Component {
     this.state = {};
   }
 
-  updateFieldValue(name, value) {
-    this.setState({[name]: value});
+  onChange(value) {
+    this.setState(value);
   }
 
   onSubmit(event) {
@@ -150,21 +184,16 @@ export default class GenericForm extends React.Component {
     if (this.props.onSubmit) {
       this.props.onSubmit(this.state);
     }
+    console.log(JSON.stringify(this.state, null, 2));
   }
 
   render() {
-    const updateFieldValue = this.updateFieldValue.bind(this);
     return (
       <form className="form" onSubmit={this.onSubmit.bind(this)}>
-        <div>{
-          Object.keys(this.props.schema.properties).map((name, index) => {
-            const constraints = this.props.schema.properties[name];
-            return renderField(name, index, constraints, updateFieldValue);
-          })
-        }</div>
-        <p>
-          <button>Submit</button>
-        </p>
+        <SchemaField 
+          schema={this.props.schema} 
+          onChange={this.onChange.bind(this)} />
+        <p><button>Submit</button></p>
       </form>
     );
   }

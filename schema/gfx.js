@@ -1,5 +1,6 @@
 export const gfxSchema = {
   "title": "Gfx",
+  "description": "Graphic driver blocklist entry.",
   "type": "object",
   "properties": {
     "os": {
