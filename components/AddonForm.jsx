@@ -4,7 +4,7 @@ import { addonSchema } from "../schema/addon";
 
 import "./styles.css";
 
-export default class AppForm extends React.Component {
+export default class AddonForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -13,6 +13,7 @@ export default class AppForm extends React.Component {
   render() {
     return <GenericForm 
       schema={addonSchema} 
+      formData={this.props.formData}
       onChange={this.setState.bind(this)} />;
   }
 }

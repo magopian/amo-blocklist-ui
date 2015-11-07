@@ -4,8 +4,16 @@ import { gfxSchema } from "../schema/gfx";
 
 import "./styles.css";
 
-export default class AppForm extends React.Component {
+export default class GfxForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+  
   render() {
-    return <GenericForm schema={gfxSchema} />;
+    return <GenericForm 
+      schema={gfxSchema} 
+      formData={this.props.formData}
+      onChange={this.setState.bind(this)} />;
   }
 }

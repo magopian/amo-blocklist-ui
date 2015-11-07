@@ -4,8 +4,16 @@ import { certificateSchema } from "../schema/certificate";
 
 import "./styles.css";
 
-export default class AppForm extends React.Component {
+export default class CertificateForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+  
   render() {
-    return <GenericForm schema={certificateSchema} />;
+    return <GenericForm 
+      schema={certificateSchema}
+      formData={this.props.formData}
+      onChange={this.setState.bind(this)} />;
   }
 }
