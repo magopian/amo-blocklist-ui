@@ -63,17 +63,19 @@ class UnsupportedField extends React.Component {
 }
 
 class SchemaField extends React.Component {
+  static get fieldComponents() {
+    return {
+      string: StringField,
+      array:  ArrayField,
+      object: ObjectField,
+    };
+  }
+
   render() {
-    switch (this.props.schema.type) {
-    case "string":
-      return <StringField {...this.props} />;
-    case "array":
-      return <ArrayField  {...this.props} />;
-    case "object":
-      return <ObjectField  {...this.props} />;
-    default:
-      return <UnsupportedField schema={this.props.schema} />;
-    }
+    const schemaType = this.props.schema.type;
+    const FieldComponent = SchemaField.fieldComponents[schemaType] ||
+      UnsupportedField;
+    return <FieldComponent {...this.props} />;
   }
 }
 
