@@ -1,5 +1,4 @@
 module.exports = {
-  schema: {
-    properties: {}
-  }
+  state: {},
+  schema: {}
 };

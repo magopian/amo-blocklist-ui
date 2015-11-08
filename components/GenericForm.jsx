@@ -57,7 +57,7 @@ class UnsupportedField extends React.Component {
   render() {
     // XXX render json as string so dev can inspect faulty subschema
     return <div className="unsupported-field">
-      Unsupported field type {this.props.schema.type || "unknown"}
+      Unsupported field schema {JSON.stringify(this.props.schema)}.
     </div>;
   }
 }
@@ -180,7 +180,7 @@ class ObjectField extends React.Component {
 export default class GenericForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = props.formData || {};
   }
 
   onChange(value) {
