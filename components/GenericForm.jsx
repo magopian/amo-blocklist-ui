@@ -211,7 +211,6 @@ export default class GenericForm extends React.Component {
     if (this.props.onSubmit) {
       this.props.onSubmit(this.state);
     }
-    console.log(JSON.stringify(this.state, null, 2));
   }
 
   render() {

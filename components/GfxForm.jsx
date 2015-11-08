@@ -27,6 +27,7 @@ export default class GfxForm extends React.Component {
       schema={gfxSchema}
       defaults={GfxForm.defaults}
       formData={this.props.formData}
-      onChange={this.setState.bind(this)} />;
+      onChange={this.setState.bind(this)}
+      onSubmit={console.log.bind(console)} />;
   }
 }

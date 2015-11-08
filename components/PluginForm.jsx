@@ -26,6 +26,7 @@ export default class PluginForm extends React.Component {
       schema={pluginSchema}
       defaults={PluginForm.defaults}
       formData={this.props.formData}
-      onChange={this.setState.bind(this)} />;
+      onChange={this.setState.bind(this)}
+      onSubmit={console.log.bind(console)} />;
   }
 }

@@ -22,6 +22,7 @@ export default class CertificateForm extends React.Component {
       schema={certificateSchema}
       defaults={CertificateForm.defaults}
       formData={this.props.formData}
-      onChange={this.setState.bind(this)} />;
+      onChange={this.setState.bind(this)}
+      onSubmit={console.log.bind(console)} />;
   }
 }

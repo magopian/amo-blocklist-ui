@@ -23,6 +23,7 @@ export default class AddonForm extends React.Component {
       schema={addonSchema}
       defaults={AddonForm.defaults}
       formData={this.props.formData}
-      onChange={this.setState.bind(this)} />;
+      onChange={this.setState.bind(this)}
+      onSubmit={console.log.bind(console)} />;
   }
 }
