@@ -9,10 +9,10 @@ export default class GfxForm extends React.Component {
     super(props);
     this.state = {};
   }
-  
+
   render() {
-    return <GenericForm 
-      schema={gfxSchema} 
+    return <GenericForm
+      schema={gfxSchema}
       formData={this.props.formData}
       onChange={this.setState.bind(this)} />;
   }

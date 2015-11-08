@@ -9,10 +9,10 @@ export default class AddonForm extends React.Component {
     super(props);
     this.state = {};
   }
-  
+
   render() {
-    return <GenericForm 
-      schema={addonSchema} 
+    return <GenericForm
+      schema={addonSchema}
       formData={this.props.formData}
       onChange={this.setState.bind(this)} />;
   }

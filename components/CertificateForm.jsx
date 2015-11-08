@@ -9,9 +9,9 @@ export default class CertificateForm extends React.Component {
     super(props);
     this.state = {};
   }
-  
+
   render() {
-    return <GenericForm 
+    return <GenericForm
       schema={certificateSchema}
       formData={this.props.formData}
       onChange={this.setState.bind(this)} />;
