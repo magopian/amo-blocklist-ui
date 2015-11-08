@@ -1,30 +1,37 @@
 export const gfxSchema = {
   "title": "Gfx",
-  "description": "Graphic driver blocklist entry.",
+  "title": "Graphic driver blocklist entry.",
   "type": "object",
   "properties": {
     "os": {
       "type": "string",
-      "description": "OS"
+      "title": "OS",
+      "description": "The operating system identifier."
     },
     "vendor": {
       "type": "string",
-      "description": "Vendor"
+      "title": "Vendor",
+      "description": "A vendor identifier, eg. 0x1002"
     },
     "devices": {
       "type": "array",
-      "description": "Devices",
+      "title": "Devices",
+      "description": "The list of impacted devices.",
       "items": {
-        "type": "string"
+        "type": "string",
+        "title": "Device",
+        "description": "A device identifier, eg. 0x9803"
       }
     },
     "feature": {
       "type": "string",
-      "description": "Feature"
+      "title": "Feature",
+      "description": "The type of feature impacted."
     },
     "featureStatus": {
       "type": "string",
-      "description": "Feature status",
+      "title": "Feature status",
+      "description": "The feature status.",
       "enum": [
         "",
         "BLOCKED_DRIVER_VERSION",
@@ -33,11 +40,13 @@ export const gfxSchema = {
     },
     "driverVersion": {
       "type": "string",
-      "description": "Driver version"
+      "title": "Driver version",
+      "description": "The driver version."
     },
     "driverVersionComparator": {
       "type": "string",
-      "description": "Driver version comparator",
+      "title": "Driver version comparator",
+      "description": "The driver version comparator",
       "enum": [
         "EQUAL",
         "LESS_THAN",

@@ -5,55 +5,69 @@ export const addonSchema = {
   "properties": {
     "addonId": {
       "type": "string",
-      "description": "Addon id"
+      "title": "Addon id",
+      "description": "The addon unique identifier."
     },
     "prefs": {
       "type": "array",
-      "description": "Preferences",
+      "title": "Preferences",
+      "description": "The list of impacted preferences.",
       "items": {
+        "title": "Preference",
+        "description": "The browser preference name, eg. browser.startup.homepage",
         "type": "string"
       }
     },
     "versionRange": {
       "type": "array",
-      "description": "Versions",
+      "title": "Versions",
+      "description": "The list of impacted versions.",
       "items": {
         "type": "object",
+        "title": "Version range",
         "description": "Version range",
         "properties": {
           "minVersion": {
-            "type": "string", 
-            "description": "Min version"
+            "type": "string",
+            "title": "Min version",
+            "description": "The mininum version."
           },
           "maxVersion": {
-            "type": "string", 
-            "description": "Max version"
+            "type": "string",
+            "title": "Max version",
+            "description": "The maximum version."
           },
           "severity": {
-            "type": "string", 
-            "description": "Severity",
+            "type": "string",
+            "title": "Severity",
+            "description": "The severity code number.",
             "enum": ["", "0", "1", "2", "3"]
           },
           "vulnerabilitystatus": {
-            "type": "string", 
-            "description": "Vulnerability status",
+            "type": "string",
+            "title": "Vulnerability status",
+            "description": "The vulnerability status code number.",
             "enum": ["", "1", "2"]
           },
           "targetApplication": {
             "type": "object",
-            "description": "Target application",
+            "title": "Target application",
+            "description": "The target application information.",
             "properties": {
               "id": {
                 "type": "string",
-                "description": "Application id"
+                "title": "Application id",
+                "description": "The application unique identifier."
               },
               "minVersion": {
                 "type": "string",
-                "description": "Min version"
+                "title": "Min version",
+                "description": "The mininum version."
               },
               "maxVersion": {
                 "type": "string",
-                "description": "Max version"
+                "title": "Max version",
+                "description": "The maximum version."
               },
             }
           }

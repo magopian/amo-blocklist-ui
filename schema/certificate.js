@@ -4,11 +4,13 @@ export const certificateSchema = {
   "properties": {
     "issuerName": {
       "type": "string",
-      "description": "Issuer name"
+      "title": "Issuer name",
+      "description": "The certificate issuer name."
     },
     "serialNumber": {
       "type": "string",
-      "description": "Serial number"
+      "title": "Serial number",
+      "description": "The certificate serial number."
     }
   }
 };

@@ -4,60 +4,74 @@ export const pluginSchema = {
   "properties": {
     "matchName": {
       "type": "string",
-      "description": "Name matches"
+      "title": "Name matches",
+      "description": "A plugin name pattern to match."
     },
     "matchFilename": {
       "type": "string",
-      "description": "Filename matches"
+      "title": "Filename matches",
+      "description": "A plugin filename pattern to match."
     },
     "matchDescription": {
       "type": "string",
-      "description": "Description matches"
+      "title": "Description matches",
+      "description": "A plugin description pattern to match."
     },
     "infoURL": {
       "type": "string",
-      "description": "Info URL"
+      "title": "Info URL",
+      "description": "A HTTP URL providing related information."
     },
     "versionRange": {
       "type": "array",
-      "description": "Versions",
+      "title": "Versions",
+      "description": "The impacted versions",
       "items": {
         "type": "object",
-        "description": "Version range",
+        "title": "Version range",
+        "description": "The version range.",
         "properties": {
           "minVersion": {
             "type": "string",
-            "description": "Min version"
+            "title": "Min version",
+            "description": "The minimum version."
           },
           "maxVersion": {
             "type": "string",
-            "description": "Max version"
+            "title": "Max version",
+            "description": "The maximum version."
           },
           "severity": {
             "type": "string",
-            "description": "Severity",
+            "title": "Severity",
+            "description": "The severity code number.",
             "enum": ["", "0", "1", "2", "3"]
           },
           "vulnerabilitystatus": {
             "type": "string",
-            "description": "Vulnerability status",
+            "title": "Vulnerability status",
+            "description": "The vulnerability status code number.",
             "enum": ["", "1", "2"]
           },
           "targetApplication": {
             "type": "object",
-            "description": "Target application",
+            "title": "Target application",
+            "description": "The target application.",
             "properties": {
               "id": {
                 "type": "string",
-                "description": "Application id"
+                "title": "Application id",
+                "description": "The application unique identifier."
               },
               "minVersion": {
                 "type": "string",
-                "description": "Min version"
+                "title": "Min version",
+                "description": "The minimum version."
               },
               "maxVersion": {
                 "type": "string",
-                "description": "Max version"
+                "title": "Max version",
+                "description": "The maximum version."
               },
             }
           }

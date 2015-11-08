@@ -24,3 +24,13 @@ body {
 .form-row select {
   display: block;
 }
+
+.array-item {
+}
+
+.array-item-add {
+  margin-top: 1em;
+}
+
+.array-item-remove {
+}

@@ -23,7 +23,7 @@ class TextField extends React.Component {
     return (
       <Field label={this.props.label}>
         <input type="text"
-          value={this.props.formData}
+          value={this.props.formData || this.props.defaults}
           placeholder={this.props.placeholder}
           onChange={this.onChange.bind(this)} />
       </Field>
@@ -39,7 +39,8 @@ class SelectField extends React.Component {
   render() {
     return (
       <Field label={this.props.label}>
-        <select value={this.props.formData} onChange={this.onChange.bind(this)}>{
+        <select value={this.props.formData || this.props.defaults}
+          onChange={this.onChange.bind(this)}>{
           this.props.options.map((option, i) => {
             return <option key={i}>{option}</option>;
           })
@@ -79,13 +80,15 @@ class StringField extends React.Component {
   render() {
     const schema = this.props.schema;
     if (Array.isArray(schema.enum)) {
-      return <SelectField label={schema.description}
+      return <SelectField label={schema.title}
         formData={this.props.formData}
+        defaults={this.props.defaults}
         options={schema.enum}
         onChange={this.props.onChange.bind(this)} />;
     }
-    return <TextField label={schema.description}
+    return <TextField label={schema.title}
              formData={this.props.formData}
+             defaults={this.props.defaults}
              placeholder={schema.description}
              onChange={this.props.onChange.bind(this)} />;
   }
@@ -94,7 +97,18 @@ class StringField extends React.Component {
 class ArrayField extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {items: props.formData || []};
+    this.state = {items: props.formData || props.defaults || []};
+  }
+
+  get itemTitle() {
+    const schema = this.props.schema;
+    return schema.items.title || schema.items.description || "Item";
+  }
+
+  getItemDefaults(index) {
+    if (Array.isArray(this.props.defaults)) {
+      return this.props.defaults[index];
+    }
   }
 
   onAddClick(event) {
@@ -125,21 +139,25 @@ class ArrayField extends React.Component {
   render() {
     const schema = this.props.schema;
     return (
-      <div className="form-row">
-        <label>{schema.description}</label>
+      <fieldset className="form-row">
+        <legend>{schema.title}</legend>
+        {schema.description ? <div>{schema.description}</div> : null}
         <div>{
           this.state.items.map((item, index) => {
-            return <div key={index}>
+            return <fieldset className="array-item" key={index}>
+              <legend>{this.itemTitle}</legend>
               <SchemaField schema={schema.items}
                 formData={this.state.items[index]}
+                defaults={this.getItemDefaults(index)}
                 onChange={this.onChange.bind(this, index)} />
-              <button type="button"
+              <button className="array-item-remove" type="button"
                 onClick={this.onDropClick.bind(this, index)}>-</button>
-            </div>;
+            </fieldset>;
           })
         }</div>
-        <button type="button" onClick={this.onAddClick.bind(this)}>+</button>
-      </div>
+        <button type="button" className="array-item-add"
+          onClick={this.onAddClick.bind(this)}>+</button>
+      </fieldset>
     );
   }
 }
@@ -147,7 +165,7 @@ class ArrayField extends React.Component {
 class ObjectField extends React.Component {
   constructor(props) {
     super(props);
-    this.state = props.formData || {};
+    this.state = props.formData || props.defaults || {};
   }
 
   asyncSetState(state) {
@@ -161,24 +179,23 @@ class ObjectField extends React.Component {
 
   render() {
     const schema = this.props.schema;
-    return <fieldset>
-    <legend>{schema.description}</legend>
-    {
+    return <div>{
       Object.keys(schema.properties).map((name, index) => {
         return <SchemaField key={index}
           name={name}
-          formData={this.state[name]}
           schema={schema.properties[name]}
+          formData={this.state[name]}
+          defaults={this.props.defaults ? this.props.defaults[name] : undefined}
           onChange={this.onChange.bind(this, name)} />;
       })
-    }</fieldset>;
+    }</div>;
   }
 }
 
 export default class GenericForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = props.formData || {};
+    this.state = props.formData || props.defaults || {};
   }
 
   onChange(value) {
@@ -203,6 +220,7 @@ export default class GenericForm extends React.Component {
         <SchemaField
           schema={this.props.schema}
           formData={this.props.formData}
+          defaults={this.props.defaults}
           onChange={this.onChange.bind(this)} />
         <p><button>Submit</button></p>
       </form>
