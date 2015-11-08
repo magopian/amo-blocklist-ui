@@ -10,9 +10,21 @@ export default class PluginForm extends React.Component {
     this.state = {};
   }
 
+  static get defaults() {
+    return {
+      matchName: "",
+      matchFilename: "",
+      matchDescription: "",
+      infoURL: "",
+      versionRange: []
+    };
+  }
+
+
   render() {
     return <GenericForm
       schema={pluginSchema}
+      defaults={PluginForm.defaults}
       formData={this.props.formData}
       onChange={this.setState.bind(this)} />;
   }

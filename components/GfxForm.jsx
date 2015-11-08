@@ -10,9 +10,22 @@ export default class GfxForm extends React.Component {
     this.state = {};
   }
 
+  static get defaults() {
+    return {
+      os: "",
+      vendor: "",
+      devices: [],
+      feature: "",
+      featureStatus: "",
+      driverVersion: "",
+      driverVersionComparator: ""
+    };
+  }
+
   render() {
     return <GenericForm
       schema={gfxSchema}
+      defaults={GfxForm.defaults}
       formData={this.props.formData}
       onChange={this.setState.bind(this)} />;
   }
