@@ -3,34 +3,34 @@ body {
   font-size: .7em;
 }
 
-.form {
+.generic-form {
   background: #fff;
   padding: 1em;
 }
 
-.form-row {
+.generic-form .form-row {
   padding-top: 1em;
 }
 
-.form-row label {
+.generic-form .form-row label {
   display: block;
   width: 350px;
 }
 
-.form-row input[type=text] {
+.generic-form .form-row input[type=text] {
   width: 350px;
 }
 
-.form-row select {
+.generic-form .form-row select {
   display: block;
 }
 
-.array-item {
+.generic-form .array-item {
 }
 
-.array-item-add {
+.generic-form .array-item-add {
   margin-top: 1em;
 }
 
-.array-item-remove {
+.generic-form .array-item-remove {
 }

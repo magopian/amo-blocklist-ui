@@ -142,7 +142,7 @@ class ArrayField extends React.Component {
       <fieldset className="form-row">
         <legend>{schema.title}</legend>
         {schema.description ? <div>{schema.description}</div> : null}
-        <div>{
+        <div className="array-item-list">{
           this.state.items.map((item, index) => {
             return <fieldset className="array-item" key={index}>
               <legend>{this.itemTitle}</legend>
@@ -216,7 +216,7 @@ export default class GenericForm extends React.Component {
 
   render() {
     return (
-      <form className="form" onSubmit={this.onSubmit.bind(this)}>
+      <form className="generic-form" onSubmit={this.onSubmit.bind(this)}>
         <SchemaField
           schema={this.props.schema}
           formData={this.props.formData}
