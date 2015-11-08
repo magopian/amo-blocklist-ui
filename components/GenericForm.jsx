@@ -39,13 +39,9 @@ class SelectField extends React.Component {
   render() {
     return (
       <Field label={this.props.label}>
-        <select onChange={this.onChange.bind(this)}>{
+        <select value={this.props.formData} onChange={this.onChange.bind(this)}>{
           this.props.options.map((option, i) => {
-            let attrs = {};
-            if (option === this.props.formData) {
-              attrs.selected = "selected";
-            }
-            return <option key={i} {...attrs}>{option}</option>;
+            return <option key={i}>{option}</option>;
           })
         }</select>
       </Field>
