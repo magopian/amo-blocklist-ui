@@ -10,7 +10,7 @@ module.exports = {
         "minVersion": "Java 7 Update 25",
         "maxVersion": "Java 7 Update 44",
         "severity": "1",
-        "vulnerabilityStatus": "0",
+        "vulnerabilityStatus": "2",
         "targetApplication": {
           "id": "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}",
           "minVersion": "17.0",

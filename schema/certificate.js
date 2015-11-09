@@ -1,6 +1,13 @@
 export const certificateSchema = {
   "title": "Certificate",
+  "description": "A blocked certificate entry.",
   "type": "object",
+  "additionalProperties": false,
+  "required": ["issuerName", "serialNumber"],
+  "default": {
+    "issuerName": "",
+    "serialNumber": ""
+  },
   "properties": {
     "issuerName": {
       "type": "string",

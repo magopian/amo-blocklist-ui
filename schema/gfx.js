@@ -1,7 +1,18 @@
 export const gfxSchema = {
   "title": "Gfx",
-  "title": "Graphic driver blocklist entry.",
+  "description": "A graphic driver blocklist entry.",
   "type": "object",
+  "additionalProperties": false,
+  "required": ["os", "vendor", "feature", "featureStatus"],
+  "default": {
+    "os": "",
+    "vendor": "",
+    "devices": [],
+    "feature": "",
+    "featureStatus": "",
+    "driverVersion": "",
+    "driverVersionComparator": ""
+  },
   "properties": {
     "os": {
       "type": "string",
@@ -20,7 +31,8 @@ export const gfxSchema = {
       "items": {
         "type": "string",
         "title": "Device",
-        "description": "A device identifier, eg. 0x9803"
+        "description": "A device identifier, eg. 0x9803",
+        "minLength": 1
       }
     },
     "feature": {
@@ -48,6 +60,7 @@ export const gfxSchema = {
       "title": "Driver version comparator",
       "description": "The driver version comparator",
       "enum": [
+        "",
         "EQUAL",
         "LESS_THAN",
         "LESS_THAN_OR_EQUAL",
