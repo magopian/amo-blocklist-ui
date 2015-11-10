@@ -1,12 +1,26 @@
 import React from "react";
+import { Validator } from "jsonschema";
+
 import "./styles.css";
 
+const REQUIRED_FIELD_SYMBOL = "*";
+
 class Field extends React.Component {
+  get label() {
+    if (!this.props.label) {
+      return null;
+    }
+    if (this.props.required) {
+      return this.props.label + REQUIRED_FIELD_SYMBOL;
+    }
+    return this.props.label;
+  }
+
   render() {
     return (
-      <div className="form-row">
+      <div className={`field field-${this.props.type}`}>
         <label>
-          {this.props.label ? this.props.label : null}
+          {this.label}
           {this.props.children}
         </label>
       </div>
@@ -21,10 +35,12 @@ class TextField extends React.Component {
 
   render() {
     return (
-      <Field label={this.props.label}>
+      <Field label={this.props.label} required={this.props.required}
+        type={this.props.schema.type}>
         <input type="text"
-          value={this.props.formData || this.props.defaults}
+          value={this.props.formData || this.props.schema.default}
           placeholder={this.props.placeholder}
+          required={this.props.required}
           onChange={this.onChange.bind(this)} />
       </Field>
     );
@@ -38,8 +54,8 @@ class SelectField extends React.Component {
 
   render() {
     return (
-      <Field label={this.props.label}>
-        <select value={this.props.formData || this.props.defaults}
+      <Field label={this.props.label} required={this.props.required}>
+        <select value={this.props.formData || this.props.schema.default}
           onChange={this.onChange.bind(this)}>{
           this.props.options.map((option, i) => {
             return <option key={i}>{option}</option>;
@@ -79,25 +95,24 @@ class SchemaField extends React.Component {
 class StringField extends React.Component {
   render() {
     const schema = this.props.schema;
+    const commonProps = {
+      schema,
+      label:    schema.title,
+      formData: this.props.formData,
+      required: this.props.required,
+      onChange: this.props.onChange.bind(this),
+    };
     if (Array.isArray(schema.enum)) {
-      return <SelectField label={schema.title}
-        formData={this.props.formData}
-        defaults={this.props.defaults}
-        options={schema.enum}
-        onChange={this.props.onChange.bind(this)} />;
+      return <SelectField options={schema.enum} {...commonProps} />;
     }
-    return <TextField label={schema.title}
-             formData={this.props.formData}
-             defaults={this.props.defaults}
-             placeholder={schema.description}
-             onChange={this.props.onChange.bind(this)} />;
+    return <TextField placeholder={schema.description} {...commonProps} />;
   }
 }
 
 class ArrayField extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {items: props.formData || props.defaults || []};
+    this.state = {items: props.formData || props.schema.default || []};
   }
 
   get itemTitle() {
@@ -105,15 +120,20 @@ class ArrayField extends React.Component {
     return schema.items.title || schema.items.description || "Item";
   }
 
-  getItemDefaults(index) {
-    if (Array.isArray(this.props.defaults)) {
-      return this.props.defaults[index];
+  defaultItem(itemsSchema) {
+    if (itemsSchema.default) {
+      return itemsSchema.default;
+    }
+    switch (itemsSchema.type) {
+    case "string": return "";
+    case "array":  return [];
+    case "object": return {};
+    default: return undefined;
     }
   }
 
-  onAddClick(event) {
-    event.preventDefault();
-    this.setState({items: this.state.items.concat("")});
+  isItemRequired(itemsSchema) {
+    return itemsSchema.type === "string" && itemsSchema.minLength > 0;
   }
 
   asyncSetState(state) {
@@ -121,11 +141,10 @@ class ArrayField extends React.Component {
     this.setState(state, _ => this.props.onChange(this.state.items));
   }
 
-  onChange(index, value) {
+  onAddClick(event) {
+    event.preventDefault();
     this.asyncSetState({
-      items: this.state.items.map((item, i) => {
-        return index === i ? value : item;
-      })
+      items: this.state.items.concat(this.defaultItem(this.props.schema.items))
     });
   }
 
@@ -136,27 +155,37 @@ class ArrayField extends React.Component {
     });
   }
 
+  onChange(index, value) {
+    this.asyncSetState({
+      items: this.state.items.map((item, i) => {
+        return index === i ? value : item;
+      })
+    });
+  }
+
   render() {
     const schema = this.props.schema;
     return (
-      <fieldset className="form-row">
+      <fieldset
+        className={`field field-array field-array-of-${schema.items.type}`}>
         <legend>{schema.title}</legend>
         {schema.description ? <div>{schema.description}</div> : null}
         <div className="array-item-list">{
           this.state.items.map((item, index) => {
-            return <fieldset className="array-item" key={index}>
-              <legend>{this.itemTitle}</legend>
+            return <div>
               <SchemaField schema={schema.items}
                 formData={this.state.items[index]}
-                defaults={this.getItemDefaults(index)}
+                rquired={this.isItemRequired(schema.items)}
                 onChange={this.onChange.bind(this, index)} />
-              <button className="array-item-remove" type="button"
-                onClick={this.onDropClick.bind(this, index)}>-</button>
-            </fieldset>;
+              <p className="array-item-remove">
+                <button type="button"
+                  onClick={this.onDropClick.bind(this, index)}>-</button></p>
+            </div>;
           })
         }</div>
-        <button type="button" className="array-item-add"
-          onClick={this.onAddClick.bind(this)}>+</button>
+        <p className="array-item-add">
+          <button type="button" onClick={this.onAddClick.bind(this)}>+</button>
+        </p>
       </fieldset>
     );
   }
@@ -165,7 +194,13 @@ class ArrayField extends React.Component {
 class ObjectField extends React.Component {
   constructor(props) {
     super(props);
-    this.state = props.formData || props.defaults || {};
+    this.state = props.formData || props.schema.default || {};
+  }
+
+  isRequired(name) {
+    const schema = this.props.schema;
+    return Array.isArray(schema.required) &&
+      schema.required.indexOf(name) !== -1;
   }
 
   asyncSetState(state) {
@@ -179,27 +214,63 @@ class ObjectField extends React.Component {
 
   render() {
     const schema = this.props.schema;
-    return <div>{
+    return <fieldset>
+      <legend>{schema.title || "Object"}</legend>
+      {
       Object.keys(schema.properties).map((name, index) => {
         return <SchemaField key={index}
           name={name}
+          required={this.isRequired(name)}
           schema={schema.properties[name]}
           formData={this.state[name]}
-          defaults={this.props.defaults ? this.props.defaults[name] : undefined}
           onChange={this.onChange.bind(this, name)} />;
       })
-    }</div>;
+    }</fieldset>;
+  }
+}
+
+class ErrorList extends React.Component {
+  render() {
+    const errors = this.props.errors;
+    if (errors.length === 0) {
+      return null;
+    }
+    return <div className="errors">
+      <h2>Errors</h2>
+      <ul>{
+        errors.map((error, i) => {
+          return <li key={i}>{error.stack}</li>;
+        })
+      }</ul>
+    </div>;
   }
 }
 
 export default class GenericForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = props.formData || props.defaults || {};
+    this.state = {
+      status: "loaded",
+      formData: props.formData || this.props.schema.default || {},
+      errors: []
+    };
   }
 
-  onChange(value) {
-    this.setState(value, _ => {
+  validate(formData) {
+    const validator = new Validator();
+    return validator.validate(formData, this.props.schema).errors;
+  }
+
+  isSubmitted() {
+    return this.state.status === "submitted";
+  }
+
+  onChange(formData) {
+    this.setState({
+      status: "editing",
+      formData,
+      errors: this.validate(formData)
+    }, _ => {
       if (this.props.onChange) {
         this.props.onChange(this.state);
       }
@@ -208,7 +279,17 @@ export default class GenericForm extends React.Component {
 
   onSubmit(event) {
     event.preventDefault();
-    if (this.props.onSubmit) {
+    this.setState({status: "submitted"});
+    const errors = this.validate(this.state.formData);
+    if (Object.keys(errors).length > 0) {
+      this.setState({errors}, _ => {
+        if (this.props.onError) {
+          this.props.onError(errors);
+        } else {
+          console.error("Form validation failed", errors);
+        }
+      });
+    } else if (this.props.onSubmit) {
       this.props.onSubmit(this.state);
     }
   }
@@ -216,10 +297,10 @@ export default class GenericForm extends React.Component {
   render() {
     return (
       <form className="generic-form" onSubmit={this.onSubmit.bind(this)}>
+        {this.isSubmitted ? <ErrorList errors={this.state.errors} /> : null}
         <SchemaField
           schema={this.props.schema}
-          formData={this.props.formData}
-          defaults={this.props.defaults}
+          formData={this.state.formData}
           onChange={this.onChange.bind(this)} />
         <p><button>Submit</button></p>
       </form>

@@ -1,4 +1,1 @@
-module.exports = {
-  state: {},
-  schema: {}
-};
+module.exports = {};
