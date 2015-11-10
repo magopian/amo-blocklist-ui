@@ -9,7 +9,7 @@ class AddonSection extends React.Component {
       <div>
         <h1>Blocked addons</h1>
         <RecordList schema={addonSchema} displayFields={["addonId"]}
-          records={[]} />
+          records={[{addonId: "aaa"}, {addonId: "bbb"}]} />
       </div>
     );
   }
@@ -48,11 +48,12 @@ export default class App extends React.Component {
   }
 
   render() {
-    return <div>
+    return <div className="main">
       <div className="sidebar">
         <ul>{
           Object.keys(App.sections).map((section, index) => {
-            return <li key={index}>
+            return <li key={index}
+              className={this.state.currentSection === section ? "active" : ""}>
               <a href="#" onClick={this.navigate.bind(this, section)}>
                 {App.sections[section]}
               </a>

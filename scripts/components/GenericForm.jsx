@@ -1,7 +1,7 @@
 import React from "react";
 import { Validator } from "jsonschema";
 
-import "../../css/styles.css";
+import "../../css/generic-form.css";
 
 
 const REQUIRED_FIELD_SYMBOL = "*";

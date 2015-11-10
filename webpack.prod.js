@@ -16,7 +16,7 @@ module.exports = {
     new webpack.IgnorePlugin(/fake\-indexeddb/)  // From kinto.js
   ],
   resolve: {
-    extensions: ["", ".js", ".jsx"]
+    extensions: ["", ".js", ".jsx", ".css"]
   },
   module: {
     loaders: [
@@ -28,6 +28,11 @@ module.exports = {
           path.join(__dirname, "schema")
         ]
       },
+      {
+        test: /\.css$/,
+        loader: "style!css",
+        include: path.join(__dirname, "css")
+      }
     ]
   }
 };
