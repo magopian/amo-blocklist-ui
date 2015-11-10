@@ -1,14 +1,34 @@
 # AMO blocklist UI
 
-This is work in progress.
+A Web admin UI to manage Mozilla's AMO blocklist.
+
+## Installation
+
+NodeJS v4+ and npm 2.14+ should be instaled and available on your machine.
 
 ```bash
 $ npm install
+```
+
+## Development server
+
+```
 $ npm start
 ```
 
-Head your browser at [localhost:8989](http://localhost:8989/).
+Application is served at [localhost:3000](http://localhost:3000/). Any project file update will trigger an automatic reload.
 
-For now, this project showcases a collection of form elements dynamically generated against a [JSON schema](http://json-schema.org/).
+## Components showcase
 
-Later on, this repo will contain the code for building & running the entire SPA.
+```
+$ npm run cosmos
+```
+
+Head your browser at [localhost:8989](http://localhost:8989/); you should see a nice UI for browsing and playing around with the main React components:
+
+![](http://i.imgur.com/MHnX3XN.png)
+
+## License
+
+Mozilla Public License 2.0
+
