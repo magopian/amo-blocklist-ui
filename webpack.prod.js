@@ -20,7 +20,14 @@ module.exports = {
   },
   module: {
     loaders: [
-      { test: /\.jsx?$/, loaders: ["babel"], include: path.join(__dirname, "scripts") },
+      {
+        test: /\.jsx?$/,
+        loaders: ["babel"],
+        include: [
+          path.join(__dirname, "scripts"),
+          path.join(__dirname, "schema")
+        ]
+      },
     ]
   }
 };
