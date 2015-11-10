@@ -9,7 +9,7 @@ class RecordEntry extends React.Component {
           return <td key={index}>{record[displayField]}</td>;
         })
       }
-      <td>
+      <td className="actions">
         <button>Edit</button>
         <button>Delete</button>
       </td>
@@ -19,7 +19,7 @@ class RecordEntry extends React.Component {
 
 export default class RecordList extends React.Component {
   render() {
-    return <table>
+    return <table className="record-list">
       <thead>
         <tr>
           {
