@@ -251,7 +251,7 @@ export default class GenericForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      status: "loaded",
+      status: "initial",
       formData: props.formData || this.props.schema.default || {},
       errors: []
     };
@@ -262,8 +262,11 @@ export default class GenericForm extends React.Component {
     return validator.validate(formData, this.props.schema).errors;
   }
 
-  isSubmitted() {
-    return this.state.status === "submitted";
+  renderErrors() {
+    if (this.state.status === "submitted") {
+      return <ErrorList errors={this.state.errors} />;
+    }
+    return null;
   }
 
   onChange(formData) {
@@ -293,12 +296,13 @@ export default class GenericForm extends React.Component {
     } else if (this.props.onSubmit) {
       this.props.onSubmit(this.state);
     }
+    this.setState({status: "initial"});
   }
 
   render() {
     return (
       <form className="generic-form" onSubmit={this.onSubmit.bind(this)}>
-        {this.isSubmitted ? <ErrorList errors={this.state.errors} /> : null}
+        {this.renderErrors()}
         <SchemaField
           schema={this.props.schema}
           formData={this.state.formData}
