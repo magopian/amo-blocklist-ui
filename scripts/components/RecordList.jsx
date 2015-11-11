@@ -1,6 +1,14 @@
 import React from "react";
 
 class RecordEntry extends React.Component {
+  static get defaultProps() {
+    return {
+      schema: {},
+      displayFields: [],
+      record: {},
+    };
+  }
+
   render() {
     const record = this.props.record;
     return <tr>
@@ -18,6 +26,14 @@ class RecordEntry extends React.Component {
 }
 
 export default class RecordList extends React.Component {
+  static get defaultProps() {
+    return {
+      schema: {},
+      displayFields: [],
+      records: [],
+    };
+  }
+
   render() {
     return <table className="record-list">
       <thead>

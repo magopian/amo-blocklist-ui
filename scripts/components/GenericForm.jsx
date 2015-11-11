@@ -144,14 +144,14 @@ class ArrayField extends React.Component {
 
   onAddClick(event) {
     event.preventDefault();
-    this.asyncSetState({
+    this.setState({
       items: this.state.items.concat(this.defaultItem(this.props.schema.items))
     });
   }
 
   onDropClick(index, event) {
     event.preventDefault();
-    this.asyncSetState({
+    this.setState({
       items: this.state.items.filter((_, i) => i !== index)
     });
   }
@@ -173,10 +173,10 @@ class ArrayField extends React.Component {
         {schema.description ? <div>{schema.description}</div> : null}
         <div className="array-item-list">{
           this.state.items.map((item, index) => {
-            return <div>
+            return <div key={index}>
               <SchemaField schema={schema.items}
                 formData={this.state.items[index]}
-                rquired={this.isItemRequired(schema.items)}
+                required={this.isItemRequired(schema.items)}
                 onChange={this.onChange.bind(this, index)} />
               <p className="array-item-remove">
                 <button type="button"
