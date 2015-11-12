@@ -1,4 +1,4 @@
-export const certificateSchema = {
+export default {
   "title": "Certificate",
   "description": "A blocked certificate entry.",
   "type": "object",

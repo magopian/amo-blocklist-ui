@@ -1,6 +1,6 @@
 import { versionRangeSchema } from "./versionRange";
 
-export const pluginSchema = {
+export default {
   "title": "Plugin",
   "description": "A blocked plugin entry.",
   "type": "object",
@@ -9,17 +9,17 @@ export const pluginSchema = {
   "properties": {
     "matchName": {
       "type": "string",
-      "title": "Name matches",
+      "title": "Name match",
       "description": "A plugin name pattern to match."
     },
     "matchFilename": {
       "type": "string",
-      "title": "Filename matches",
+      "title": "Filename match",
       "description": "A plugin filename pattern to match."
     },
     "matchDescription": {
       "type": "string",
-      "title": "Description matches",
+      "title": "Description match",
       "description": "A plugin description pattern to match."
     },
     "infoURL": {

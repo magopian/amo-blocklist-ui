@@ -1,6 +1,6 @@
-import { versionRangeSchema } from "./versionRange";
+import versionRangeSchema from "./versionRange";
 
-export const addonSchema = {
+export default {
   "title": "Addon",
   "description": "Addon",
   "type": "object",

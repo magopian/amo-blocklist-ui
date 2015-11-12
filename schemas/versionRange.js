@@ -1,4 +1,4 @@
-export const versionRangeSchema = {
+export default {
   "type": "array",
   "title": "Versions",
   "description": "The list of impacted versions.",

@@ -1,68 +1,97 @@
 import React from "react";
 import RecordList from "./RecordList";
 
-import { addonSchema } from "../../schema/addon";
+class Collection extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = this.props.store.getState();
+    this.props.events.on(this.props.name + ":change", this.onChange.bind(this));
+  }
 
-class AddonSection extends React.Component {
+  componentWillUnmount() {
+    this.props.events.removeAllListeners(this.props.name + ":change");
+  }
+
+  onChange() {
+    this.setState(this.props.store.getState());
+  }
+
   render() {
     return (
       <div>
-        <h1>Blocked addons</h1>
-        <RecordList schema={addonSchema} displayFields={["addonId"]}
-          records={[{addonId: "aaa"}, {addonId: "bbb"}]} />
+        <h1>{this.props.label}</h1>
+        {this.state.records.length === 0 ?
+          <p>This collection is empty.</p> :
+          <RecordList schema={this.props.schema}
+            displayFields={this.props.displayFields}
+            records={this.state.records} />}
       </div>
     );
   }
 }
 
-class Section extends React.Component {
+class HomePage extends React.Component {
   render() {
-    switch(this.props.current) {
-    case "addons": return <AddonSection />;
-    case "certificates": return <div>Certificate section</div>;
-    case "gfx": return <div>Gfx section</div>;
-    case "plugins": return <div>Plugin section</div>;
-    default: return <div>Home section</div>;
-    }
+    return <div>
+      <h1>AMO Blocklist</h1>
+      <p>Welcome.</p>
+    </div>;
   }
 }
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {currentSection: "home"};
+    this.state = {current: props.defaultCollection};
   }
 
-  static get sections() {
+  static get defaultProps() {
     return {
-      addons: "Addons",
-      certificates: "Certificates",
-      gfx: "Gfx",
-      plugins: "Plugins",
+      collections: {},
+      defaultCollection: null,
     };
   }
 
-  navigate(currentSection, event) {
+  select(current, event) {
     event.preventDefault();
-    this.setState({currentSection});
+    this.setState({current});
+  }
+
+  renderCollection() {
+    if (this.state.current in this.props.collections) {
+      const collection = this.props.collections[this.state.current];
+      return <Collection
+        schema={collection.schema}
+        store={collection.store}
+        label={collection.label}
+        displayFields={collection.displayFields}
+        events={this.props.events} />;
+    }
+    return <HomePage collections={this.props.collections} />;
   }
 
   render() {
     return <div className="main">
       <div className="sidebar">
-        <ul>{
-          Object.keys(App.sections).map((section, index) => {
-            return <li key={index}
-              className={this.state.currentSection === section ? "active" : ""}>
-              <a href="#" onClick={this.navigate.bind(this, section)}>
-                {App.sections[section]}
-              </a>
-            </li>;
-          })
-        }</ul>
+        <ul>
+          <li className={!this.state.current ? "active" : ""}>
+            <a href="#" onClick={this.select.bind(this, "home")}>Home</a>
+          </li>
+          {
+            Object.keys(this.props.collections).map((name, index) => {
+              const collection = this.props.collections[name];
+              return <li key={index}
+                className={this.state.current === name ? "active" : ""}>
+                <a href="#" onClick={this.select.bind(this, name)}>
+                  {collection.label}
+                </a>
+              </li>;
+            })
+          }
+        </ul>
       </div>
       <div className="content">
-        <Section current={this.state.currentSection} />
+        {this.renderCollection()}
       </div>
     </div>;
   }

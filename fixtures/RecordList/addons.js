@@ -1,4 +1,4 @@
-import { addonSchema } from "../../schema/addon";
+import schemas from "../../schemas";
 
 function fakeAddon(index) {
   return {
@@ -15,7 +15,7 @@ function fakeAddons(n) {
 }
 
 module.exports = {
-  schema: addonSchema,
+  schema: schemas.addons,
   displayFields: ["addonId"],
   records: fakeAddons(30)
 };

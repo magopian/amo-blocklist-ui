@@ -20,7 +20,7 @@
     "babel": "^5.8.20",
     "babel-loader": "^5.3.2",
     "chai": "^3.2.0",
-    "cosmos-js": "^0.6.3",
+    "cosmos-js": "^0.6.9",
     "css-loader": "^0.15.6",
     "eslint": "^1.8.0",
     "eslint-plugin-react": "^3.6.3",
