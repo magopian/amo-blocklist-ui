@@ -5,15 +5,34 @@ class Collection extends React.Component {
   constructor(props) {
     super(props);
     this.state = this.props.store.getState();
-    this.props.events.on(this.props.name + ":change", this.onChange.bind(this));
+  }
+
+  componentDidMount() {
+    this.init(this.props.name);
   }
 
   componentWillUnmount() {
     this.props.events.removeAllListeners(this.props.name + ":change");
   }
 
-  onChange() {
-    this.setState(this.props.store.getState());
+  componentWillReceiveProps(nextProps) {
+    if (this.props.name !== nextProps.name) {
+      this.init(nextProps.name);
+    }
+  }
+
+  init(name) {
+    this.props.events.removeAllListeners(name + ":change");
+    this.props.events.on(name + ":change", this.onChange.bind(this));
+    this.props.events.emit(name + ":load");
+  }
+
+  onChange(state) {
+    this.setState(state);
+  }
+
+  sync() {
+    this.props.events.emit(this.props.name + ":sync");
   }
 
   render() {
@@ -25,6 +44,9 @@ class Collection extends React.Component {
           <RecordList schema={this.props.schema}
             displayFields={this.props.displayFields}
             records={this.state.records} />}
+        <p>
+          <button onClick={this.sync.bind(this)}>Synchronize</button>
+        </p>
       </div>
     );
   }
@@ -61,6 +83,7 @@ export default class App extends React.Component {
     if (this.state.current in this.props.collections) {
       const collection = this.props.collections[this.state.current];
       return <Collection
+        name={this.state.current}
         schema={collection.schema}
         store={collection.store}
         label={collection.label}

@@ -5,15 +5,16 @@ import Store from "./store";
 import { EventEmitter } from "events";
 import schemas from "../schemas";
 import App from "./components/App";
+import btoa from "btoa";
 
 import "../css/styles.css";
 
-const kinto = new Kinto({
-  remote:   "http://localhost:8000/v1",
-  dbPrefix: "user",
-  headers:  {}
-});
 const events = new EventEmitter();
+const kinto = new Kinto({
+  remote:   "http://0.0.0.0:8888/v1",
+  dbPrefix: "user",
+  headers:  {Authorization: "Basic " + btoa("user:")}
+});
 const collections = {
   addons: {
     label: "Addons",
