@@ -1,9 +1,13 @@
-import React from "react";
+import React, { PropTypes } from "react";
 import RecordList from "./RecordList";
 
 class Collection extends React.Component {
-  constructor(props) {
-    super(props);
+  static contextTypes = {
+    events: PropTypes.object.isRequired
+  };
+
+  constructor(props, context) {
+    super(props, context);
     this.state = this.props.store.getState();
   }
 
@@ -12,7 +16,7 @@ class Collection extends React.Component {
   }
 
   componentWillUnmount() {
-    this.props.events.removeAllListeners(this.props.name + ":change");
+    this.context.events.removeAllListeners(this.props.name + ":change");
   }
 
   componentWillReceiveProps(nextProps) {
@@ -22,17 +26,21 @@ class Collection extends React.Component {
   }
 
   init(name) {
-    this.props.events.removeAllListeners(name + ":change");
-    this.props.events.on(name + ":change", this.onChange.bind(this));
-    this.props.events.emit(name + ":load");
+    this.context.events.removeAllListeners(name + ":change");
+    this.context.events.on(name + ":change", this.onChange.bind(this));
+    this.context.events.emit(name + ":load");
   }
 
   onChange(state) {
     this.setState(state);
   }
 
-  sync() {
-    this.props.events.emit(this.props.name + ":sync");
+  onAddClick() {
+    this.context.events.emit(this.props.name + ":add");
+  }
+
+  onSyncClick() {
+    this.context.events.emit(this.props.name + ":sync");
   }
 
   render() {
@@ -41,11 +49,17 @@ class Collection extends React.Component {
         <h1>{this.props.label}</h1>
         {this.state.records.length === 0 ?
           <p>This collection is empty.</p> :
-          <RecordList schema={this.props.schema}
+          <RecordList
+            name={this.props.name}
+            schema={this.props.schema}
             displayFields={this.props.displayFields}
-            records={this.state.records} />}
+            records={this.state.records}
+            events={this.context.events} />}
         <p>
-          <button onClick={this.sync.bind(this)}>Synchronize</button>
+          <button type="button"
+            onClick={this.onSyncClick.bind(this)}>Synchronize</button>
+          <button type="button"
+            onClick={this.onAddClick.bind(this)}>Add</button>
         </p>
       </div>
     );
@@ -62,9 +76,19 @@ class HomePage extends React.Component {
 }
 
 export default class App extends React.Component {
+  static childContextTypes = {
+    events: PropTypes.object
+  };
+
   constructor(props) {
     super(props);
     this.state = {current: props.defaultCollection};
+  }
+
+  getChildContext() {
+    return {
+      events: this.props.events
+    };
   }
 
   static get defaultProps() {
@@ -87,8 +111,7 @@ export default class App extends React.Component {
         schema={collection.schema}
         store={collection.store}
         label={collection.label}
-        displayFields={collection.displayFields}
-        events={this.props.events} />;
+        displayFields={collection.displayFields} />;
     }
     return <HomePage collections={this.props.collections} />;
   }

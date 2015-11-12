@@ -9,6 +9,15 @@ class RecordEntry extends React.Component {
     };
   }
 
+  onEditClick(event) {
+    this.props.events.emit(this.props.name + ":edit", this.props.record);
+  }
+
+  onDeleteClick(event) {
+    this.props.events.emit(this.props.name + ":delete", this.props.record.id);
+  }
+
+
   render() {
     const record = this.props.record;
     return <tr>
@@ -18,8 +27,10 @@ class RecordEntry extends React.Component {
         })
       }
       <td className="actions">
-        <button>Edit</button>
-        <button>Delete</button>
+        <button type="button"
+          onClick={this.onEditClick.bind(this)}>Edit</button>
+        <button type="button"
+          onClick={this.onDeleteClick.bind(this)}>Delete</button>
       </td>
     </tr>;
   }
@@ -50,9 +61,12 @@ export default class RecordList extends React.Component {
       </thead>
       <tbody>{
         this.props.records.map((record, index) => {
-          return <RecordEntry key={index} record={record}
+          return <RecordEntry key={index}
+            name={this.props.name}
+            record={record}
             schema={this.props.schema}
-            displayFields={this.props.displayFields} />;
+            displayFields={this.props.displayFields}
+            events={this.props.events} />;
         })
       }</tbody>
     </table>;
