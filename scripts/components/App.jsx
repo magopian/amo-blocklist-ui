@@ -22,6 +22,7 @@ class Form extends React.Component {
       this.props.actions.update(
         Object.assign({}, data.formData, {id, last_modified}));
     }
+    this.props.actions.load();
   }
 
   onBackLinkClick(event) {
@@ -35,8 +36,7 @@ class Form extends React.Component {
       <p>
         <a href="#" onClick={this.onBackLinkClick.bind(this)}>&laquo; Back</a>
       </p>
-      <GenericForm {...this.props}
-        onSubmit={this.onSubmit.bind(this)} />
+      <GenericForm {...this.props} onSubmit={this.onSubmit.bind(this)} />
     </div>;
   }
 }
