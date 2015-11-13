@@ -18,11 +18,11 @@ class RecordEntry extends React.Component {
   }
 
   onEditClick(event) {
-    this.props.events.emit(this.props.name + ":edit", this.props.record);
+    this.props.actions.edit(this.props.record);
   }
 
   onDeleteClick(event) {
-    this.props.events.emit(this.props.name + ":delete", this.props.record.id);
+    this.props.actions.delete(this.props.record.id);
   }
 
 
@@ -76,6 +76,7 @@ export default class RecordList extends React.Component {
           return <RecordEntry key={index}
             name={this.props.name}
             record={record}
+            actions={this.props.actions}
             schema={this.props.schema}
             displayFields={this.props.displayFields}
             events={this.props.events} />;

@@ -1,6 +1,7 @@
 import React from "react";
 import Collection from "./Collection";
 import GenericForm from "./GenericForm";
+import { cleanRecord } from "kinto/lib/api";
 
 class HomePage extends React.Component {
   render() {
@@ -13,7 +14,14 @@ class HomePage extends React.Component {
 
 class Form extends React.Component {
   onSubmit(data) {
-    this.props.actions.create(data.formData);
+    if (this.props.action === "add") {
+      this.props.actions.create(data.formData);
+    } else if (this.props.action === "edit") {
+      const id = this.props.original.id;
+      const last_modified = this.props.original.last_modified;
+      this.props.actions.update(
+        Object.assign({}, data.formData, {id, last_modified}));
+    }
   }
 
   render() {
@@ -46,7 +54,10 @@ export default class App extends React.Component {
   registerNavigationEvents() {
     Object.keys(this.props.collections).forEach(collection => {
       this.props.events.on([collection, "add"], _ => {
-        this.setState({add: true});
+        this.setState({add: true, edit: null});
+      });
+      this.props.events.on([collection, "edit"], record => {
+        this.setState({add: false, edit: record});
       });
     });
   }
@@ -61,12 +72,20 @@ export default class App extends React.Component {
       const collection = this.props.collections[this.state.current];
       if (this.state.add) {
         return <Form
+          action="add"
           name={this.state.current}
           label={collection.label}
           schema={collection.schema}
           actions={collection.actions} />;
       } else if (this.state.edit) {
-        return <div>Edit</div>;
+        return <Form
+          action="edit"
+          name={this.state.current}
+          original={this.state.edit}
+          formData={cleanRecord(this.state.edit, ["id", "last_modified", "_status"])}
+          label={collection.label}
+          schema={collection.schema}
+          actions={collection.actions} />;
       }
       return this.renderCollection();
     }

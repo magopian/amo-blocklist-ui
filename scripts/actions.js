@@ -16,6 +16,10 @@ export default class CollectionActions {
     this._emit("create", record);
   }
 
+  edit(record) {
+    this._emit("edit", record);
+  }
+
   update(record) {
     this._emit("update", record);
   }
