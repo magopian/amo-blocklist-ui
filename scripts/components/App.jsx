@@ -81,24 +81,21 @@ export default class App extends React.Component {
   renderContent() {
     if (this.state.current in this.props.collections) {
       const collection = this.props.collections[this.state.current];
+      const formProps = {
+        name: this.state.current,
+        label: collection.label,
+        schema: collection.schema,
+        actions: collection.actions,
+      };
       if (this.state.add) {
-        return <Form
-          action="add"
-          name={this.state.current}
-          label={collection.label}
-          schema={collection.schema}
-          actions={collection.actions} />;
+        return <Form action="add" {...formProps} />;
       } else if (this.state.edit) {
         const initialFormData = cleanRecord(this.state.edit,
             ["id", "last_modified", "_status"]);
-        return <Form
-          action="edit"
-          name={this.state.current}
+        return <Form action="edit"
           original={this.state.edit}
           formData={initialFormData}
-          label={collection.label}
-          schema={collection.schema}
-          actions={collection.actions} />;
+          {...formProps} />;
       }
       return this.renderCollection();
     }
