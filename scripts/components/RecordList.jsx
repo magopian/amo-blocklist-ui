@@ -56,7 +56,7 @@ export default class RecordList extends React.Component {
               }</th>;
             })
           }
-          <th>Actions</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>{

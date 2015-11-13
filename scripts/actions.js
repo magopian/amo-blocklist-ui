@@ -8,6 +8,10 @@ export default class CollectionActions {
     this.events.emit([this.name, event], data);
   }
 
+  add() {
+    this._emit("add");
+  }
+
   create(record) {
     this._emit("create", record);
   }
