@@ -293,6 +293,7 @@ export default class GenericForm extends React.Component {
           console.error("Form validation failed", errors);
         }
       });
+      return;
     } else if (this.props.onSubmit) {
       this.props.onSubmit(this.state);
     }
