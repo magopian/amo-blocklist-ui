@@ -1,5 +1,8 @@
+import schemas from "../../schemas";
+
 module.exports = {
   state: {},
+  schema: schemas.addons,
   formData: {
     "addonId": "/^pink@.*\\.info$/",
     "prefs": [

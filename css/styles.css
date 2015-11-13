@@ -12,12 +12,6 @@ body {
   background: #F6F4EC;
 }
 
-a {
-  color: #444;
-  text-decoration: none;
-  border-bottom: 1px dashed #444;
-}
-
 #app {
   height: 100%;
 }
@@ -80,6 +74,12 @@ a {
   font-size: 1.3em;
   margin-top: 0;
   border-bottom: 1px dotted #aaa;
+}
+
+.content a {
+  color: #444;
+  text-decoration: none;
+  border-bottom: 1px dashed #444;
 }
 
 table.record-list {

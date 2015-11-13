@@ -1,5 +1,8 @@
+import schemas from "../../schemas";
+
 module.exports = {
   state: {},
+  schema: schemas.gfx,
   formData: {
     "os": "WINNT 6.1",
     "vendor": "0x1002",

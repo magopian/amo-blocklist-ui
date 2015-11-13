@@ -1,5 +1,8 @@
+import schemas from "../../schemas";
+
 module.exports = {
   state: {},
+  schema: schemas.plugins,
   formData: {
     "matchName": "Java\\(TM\\) Platform SE 6 U4[2-5](\\s[^\\d\\._U]|$)",
     "matchFilename": "npjp2\.dll",
