@@ -24,9 +24,17 @@ class Form extends React.Component {
     }
   }
 
+  onBackLinkClick(event) {
+    event.preventDefault();
+    this.props.actions.load();
+  }
+
   render() {
     return <div>
       <h1>{this.props.label}</h1>
+      <p>
+        <a href="#" onClick={this.onBackLinkClick.bind(this)}>&laquo; Back</a>
+      </p>
       <GenericForm {...this.props}
         onSubmit={this.onSubmit.bind(this)} />
     </div>;
@@ -59,6 +67,9 @@ export default class App extends React.Component {
       this.props.events.on([collection, "edit"], record => {
         this.setState({add: false, edit: record});
       });
+      this.props.events.on([collection, "load"], record => {
+        this.setState({add: false, edit: null});
+      });
     });
   }
 
@@ -78,11 +89,13 @@ export default class App extends React.Component {
           schema={collection.schema}
           actions={collection.actions} />;
       } else if (this.state.edit) {
+        const initialFormData = cleanRecord(this.state.edit,
+            ["id", "last_modified", "_status"]);
         return <Form
           action="edit"
           name={this.state.current}
           original={this.state.edit}
-          formData={cleanRecord(this.state.edit, ["id", "last_modified", "_status"])}
+          formData={initialFormData}
           label={collection.label}
           schema={collection.schema}
           actions={collection.actions} />;

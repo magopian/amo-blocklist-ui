@@ -22,13 +22,14 @@ class RecordEntry extends React.Component {
   }
 
   onDeleteClick(event) {
-    this.props.actions.delete(this.props.record.id);
+    if (confirm("Are you sure?")) {
+      this.props.actions.delete(this.props.record.id);
+    }
   }
-
 
   render() {
     const record = this.props.record;
-    return <tr>
+    return <tr className={record._status !== "synced" ? "unsynced" : ""}>
       {
         this.props.displayFields.map((displayField, index) => {
           return <td key={index}>{record[displayField]}</td>;

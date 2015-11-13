@@ -44,10 +44,7 @@ export default class Store {
   _execute(promise) {
     this.setState({busy: true});
     return Promise.resolve(promise)
-      .then(_ => {
-        console.log(_);
-        return this.collection.list();
-      })
+      .then(_ => this.collection.list())
       .then(res => this.setState({busy: false, error: null, records: res.data}))
       .catch(error => this.setState({busy: false, error}));
   }
