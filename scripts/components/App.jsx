@@ -1,34 +1,30 @@
-import React, { PropTypes } from "react";
+import React from "react";
 import RecordList from "./RecordList";
 
 class Collection extends React.Component {
-  static contextTypes = {
-    events: PropTypes.object.isRequired
-  };
-
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
     this.state = this.props.store.getState();
   }
 
   componentDidMount() {
-    this.init(this.props.name);
+    this.init();
   }
 
   componentWillUnmount() {
-    this.context.events.removeAllListeners(this.props.name + ":change");
+    this.props.store.unsubscribe();
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.name !== nextProps.name) {
-      this.init(nextProps.name);
+      this.setState(nextProps.store.getState(), this.init);
     }
   }
 
-  init(name) {
-    this.context.events.removeAllListeners(name + ":change");
-    this.context.events.on(name + ":change", this.onChange.bind(this));
-    this.context.events.emit(name + ":load");
+  init() {
+    this.props.store.unsubscribe();
+    this.props.store.subscribe(this.onChange.bind(this));
+    this.props.actions.load();
   }
 
   onChange(state) {
@@ -36,11 +32,11 @@ class Collection extends React.Component {
   }
 
   onAddClick() {
-    this.context.events.emit(this.props.name + ":add");
+    this.props.actions.add();
   }
 
   onSyncClick() {
-    this.context.events.emit(this.props.name + ":sync");
+    this.props.actions.sync();
   }
 
   render() {
@@ -54,7 +50,7 @@ class Collection extends React.Component {
             schema={this.props.schema}
             displayFields={this.props.displayFields}
             records={this.state.records}
-            events={this.context.events} />}
+            actions={this.props.actions} />}
         <p>
           <button type="button"
             onClick={this.onSyncClick.bind(this)}>Synchronize</button>
@@ -76,19 +72,9 @@ class HomePage extends React.Component {
 }
 
 export default class App extends React.Component {
-  static childContextTypes = {
-    events: PropTypes.object
-  };
-
   constructor(props) {
     super(props);
     this.state = {current: props.defaultCollection};
-  }
-
-  getChildContext() {
-    return {
-      events: this.props.events
-    };
   }
 
   static get defaultProps() {
@@ -110,6 +96,7 @@ export default class App extends React.Component {
         name={this.state.current}
         schema={collection.schema}
         store={collection.store}
+        actions={collection.actions}
         label={collection.label}
         displayFields={collection.displayFields} />;
     }

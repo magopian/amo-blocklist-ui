@@ -1,0 +1,30 @@
+export default class CollectionActions {
+  constructor(name, events) {
+    this.name = name;
+    this.events = events;
+  }
+
+  _emit(event, data) {
+    this.events.emit([this.name, event], data);
+  }
+
+  create(record) {
+    this._emit("create", record);
+  }
+
+  update(record) {
+    this._emit("update", record);
+  }
+
+  delete(id) {
+    this._emit("delete", id);
+  }
+
+  load() {
+    this._emit("load");
+  }
+
+  sync(options) {
+    this._emit("sync", options);
+  }
+}

@@ -1,4 +1,4 @@
-import { versionRangeSchema } from "./versionRange";
+import versionRangeSchema from "./versionRange";
 
 export default {
   "title": "Plugin",
