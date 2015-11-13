@@ -1,5 +1,6 @@
 import React from "react";
 import Collection from "./Collection";
+import GenericForm from "./GenericForm";
 
 class HomePage extends React.Component {
   render() {
@@ -10,10 +11,29 @@ class HomePage extends React.Component {
   }
 }
 
+class Form extends React.Component {
+  onSubmit(data) {
+    this.props.actions.create(data.formData);
+  }
+
+  render() {
+    return <div>
+      <h1>{this.props.label}</h1>
+      <GenericForm {...this.props}
+        onSubmit={this.onSubmit.bind(this)} />
+    </div>;
+  }
+}
+
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {current: props.defaultCollection};
+    this.state = {
+      current: props.defaultCollection,
+      add: false,
+      edit: null,
+    };
+    this.registerNavigationEvents();
   }
 
   static get defaultProps() {
@@ -23,23 +43,45 @@ export default class App extends React.Component {
     };
   }
 
+  registerNavigationEvents() {
+    Object.keys(this.props.collections).forEach(collection => {
+      this.props.events.on([collection, "add"], _ => {
+        this.setState({add: true});
+      });
+    });
+  }
+
   select(current, event) {
     event.preventDefault();
-    this.setState({current});
+    this.setState({add: false, edit: null, current});
+  }
+
+  renderContent() {
+    if (this.state.current in this.props.collections) {
+      const collection = this.props.collections[this.state.current];
+      if (this.state.add) {
+        return <Form
+          name={this.state.current}
+          label={collection.label}
+          schema={collection.schema}
+          actions={collection.actions} />;
+      } else if (this.state.edit) {
+        return <div>Edit</div>;
+      }
+      return this.renderCollection();
+    }
+    return <HomePage collections={this.props.collections} />;
   }
 
   renderCollection() {
-    if (this.state.current in this.props.collections) {
-      const collection = this.props.collections[this.state.current];
-      return <Collection
-        name={this.state.current}
-        schema={collection.schema}
-        store={collection.store}
-        actions={collection.actions}
-        label={collection.label}
-        displayFields={collection.displayFields} />;
-    }
-    return <HomePage collections={this.props.collections} />;
+    const collection = this.props.collections[this.state.current];
+    return <Collection
+      name={this.state.current}
+      schema={collection.schema}
+      store={collection.store}
+      actions={collection.actions}
+      label={collection.label}
+      displayFields={collection.displayFields} />;
   }
 
   render() {
@@ -63,7 +105,7 @@ export default class App extends React.Component {
         </ul>
       </div>
       <div className="content">
-        {this.renderCollection()}
+        {this.renderContent()}
       </div>
     </div>;
   }

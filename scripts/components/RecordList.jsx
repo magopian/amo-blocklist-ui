@@ -9,6 +9,14 @@ class RecordEntry extends React.Component {
     };
   }
 
+  get lastModified() {
+    const lastModified = this.props.record.last_modified;
+    if (!lastModified) {
+      return null;
+    }
+    return new Date(lastModified).toJSON();
+  }
+
   onEditClick(event) {
     this.props.events.emit(this.props.name + ":edit", this.props.record);
   }
@@ -26,6 +34,8 @@ class RecordEntry extends React.Component {
           return <td key={index}>{record[displayField]}</td>;
         })
       }
+      <td className="lastmod">{this.lastModified}</td>
+      <td className="status">{record._status}</td>
       <td className="actions">
         <button type="button"
           onClick={this.onEditClick.bind(this)}>Edit</button>
@@ -56,6 +66,8 @@ export default class RecordList extends React.Component {
               }</th>;
             })
           }
+          <th>Last mod.</th>
+          <th>Status</th>
           <th></th>
         </tr>
       </thead>

@@ -79,15 +79,24 @@ body {
 table.record-list {
   width: 100%;
   border-collapse: collapse;
-  font-size: .9em;
+  font-size: .8em;
 }
 
 table.record-list th {
-  font-weight: normal;
+}
+
+table.record-list thead tr {
+  border-bottom: 1px solid #ccc;
+}
+
+table.record-list tbody tr {
+  border-bottom: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
 }
 
 table.record-list td {
-  padding: .25em .5em;
+  padding: .3em .4em;
 }
 
 table.record-list tbody tr:nth-child(odd) {
@@ -98,7 +107,17 @@ table.record-list tbody tr:nth-child(even) {
   background: #F7F5FD;
 }
 
+table.record-list td.lastmod {
+  width: 80px;
+  text-align: center;
+}
+
+table.record-list td.status {
+  width: 80px;
+  text-align: center;
+}
+
 table.record-list td.actions {
   width: 120px;
-  text-align: center;
+  text-align: right;
 }
