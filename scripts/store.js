@@ -16,6 +16,7 @@ export default class Store {
     this._respondTo("delete", this.delete.bind(this));
     this._respondTo("load", this.load.bind(this));
     this._respondTo("sync", this.sync.bind(this));
+    this._respondTo("resetSync", this.resetSync.bind(this));
   }
 
   getState() {
@@ -67,5 +68,9 @@ export default class Store {
 
   sync(options=SYNC_DEFAULT_OPTIONS) {
     return this._execute(this.collection.sync(options));
+  }
+
+  resetSync() {
+    return this._execute(this.collection.resetSyncStatus());
   }
 }

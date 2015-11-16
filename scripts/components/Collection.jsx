@@ -1,6 +1,28 @@
 import React from "react";
 import RecordList from "./RecordList";
 
+class AdvancedActions extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {enabled: false};
+  }
+
+  onAdvancedLinkClick(event) {
+    event.preventDefault();
+    this.setState({enabled: true});
+  }
+
+  render() {
+    if (this.state.enabled) {
+      return <button type="button"
+        onClick={this.props.resetSync}>Reset Sync Status</button>;
+    }
+    return <a href="" onClick={this.onAdvancedLinkClick.bind(this)}>
+      &raquo; Show advanced actions
+    </a>;
+  }
+}
+
 export default class Collection extends React.Component {
   constructor(props) {
     super(props);
@@ -39,6 +61,12 @@ export default class Collection extends React.Component {
     this.props.actions.sync();
   }
 
+  onResetSyncClick() {
+    if (confirm("Are you sure?")) {
+      this.props.actions.resetSync();
+    }
+  }
+
   render() {
     return (
       <div>
@@ -51,11 +79,12 @@ export default class Collection extends React.Component {
             displayFields={this.props.displayFields}
             records={this.state.records}
             actions={this.props.actions} />}
-        <p>
+        <p className="actions">
           <button type="button"
             onClick={this.onSyncClick.bind(this)}>Synchronize</button>
           <button type="button"
             onClick={this.onAddClick.bind(this)}>Add</button>
+          <AdvancedActions resetSync={this.onResetSyncClick.bind(this)} />
         </p>
       </div>
     );

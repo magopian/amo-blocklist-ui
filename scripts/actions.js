@@ -35,4 +35,8 @@ export default class CollectionActions {
   sync(options) {
     this._emit("sync", options);
   }
+
+  resetSync() {
+    this._emit("resetSync");
+  }
 }
