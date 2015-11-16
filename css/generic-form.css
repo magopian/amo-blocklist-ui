@@ -1,14 +1,9 @@
-body {
-  font-family: Arial, sans;
-}
-
 .generic-form * {
   box-sizing: border-box;
 }
 
 .generic-form {
-  background: #fff;
-  padding: 1em;
+  padding: 0;
   font-size: .8em;
   color: #555;
 }

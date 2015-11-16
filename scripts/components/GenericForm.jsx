@@ -1,7 +1,8 @@
 import React from "react";
 import { Validator } from "jsonschema";
 
-import "./styles.css";
+import "../../css/generic-form.css";
+
 
 const REQUIRED_FIELD_SYMBOL = "*";
 
@@ -143,14 +144,14 @@ class ArrayField extends React.Component {
 
   onAddClick(event) {
     event.preventDefault();
-    this.asyncSetState({
+    this.setState({
       items: this.state.items.concat(this.defaultItem(this.props.schema.items))
     });
   }
 
   onDropClick(index, event) {
     event.preventDefault();
-    this.asyncSetState({
+    this.setState({
       items: this.state.items.filter((_, i) => i !== index)
     });
   }
@@ -172,10 +173,10 @@ class ArrayField extends React.Component {
         {schema.description ? <div>{schema.description}</div> : null}
         <div className="array-item-list">{
           this.state.items.map((item, index) => {
-            return <div>
+            return <div key={index}>
               <SchemaField schema={schema.items}
                 formData={this.state.items[index]}
-                rquired={this.isItemRequired(schema.items)}
+                required={this.isItemRequired(schema.items)}
                 onChange={this.onChange.bind(this, index)} />
               <p className="array-item-remove">
                 <button type="button"
@@ -250,7 +251,7 @@ export default class GenericForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      status: "loaded",
+      status: "initial",
       formData: props.formData || this.props.schema.default || {},
       errors: []
     };
@@ -261,8 +262,11 @@ export default class GenericForm extends React.Component {
     return validator.validate(formData, this.props.schema).errors;
   }
 
-  isSubmitted() {
-    return this.state.status === "submitted";
+  renderErrors() {
+    if (this.state.status === "submitted") {
+      return <ErrorList errors={this.state.errors} />;
+    }
+    return null;
   }
 
   onChange(formData) {
@@ -289,15 +293,17 @@ export default class GenericForm extends React.Component {
           console.error("Form validation failed", errors);
         }
       });
+      return;
     } else if (this.props.onSubmit) {
       this.props.onSubmit(this.state);
     }
+    this.setState({status: "initial"});
   }
 
   render() {
     return (
       <form className="generic-form" onSubmit={this.onSubmit.bind(this)}>
-        {this.isSubmitted ? <ErrorList errors={this.state.errors} /> : null}
+        {this.renderErrors()}
         <SchemaField
           schema={this.props.schema}
           formData={this.state.formData}

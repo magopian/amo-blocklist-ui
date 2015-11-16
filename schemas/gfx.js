@@ -1,4 +1,4 @@
-export const gfxSchema = {
+export default {
   "title": "Gfx",
   "description": "A graphic driver blocklist entry.",
   "type": "object",
