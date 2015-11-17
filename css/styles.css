@@ -143,13 +143,12 @@ p.actions a {
   margin-left: 1em;
 }
 
-.error-notification {
-  border: 2px solid #C13832;
+.notification {
   border-radius: 8px;
   margin-bottom: 1em;
 }
 
-.error-notification .close {
+.notification .close {
   position: fixed;
   right: 1.5vw;
   font-size: 1.2em;
@@ -158,17 +157,39 @@ p.actions a {
   padding-top: .2em;
 }
 
-.error-notification h2 {
-  background: #C13832;
+.notification h2 {
   color: white;
   margin: 0;
   font-size: 1em;
   padding: .1em .4em .3em .4em;
 }
 
-.error-notification p {
+.notification p {
   margin: .5em 0;
   padding: 0 .5em;
-  color: #C13832;
   font-size: .8em;
+}
+
+.notification-error {
+  border: 2px solid #C13832;
+}
+
+.notification-error h2 {
+  background: #C13832;
+}
+
+.notification-error p {
+  color: #C13832;
+}
+
+.notification-message {
+  border: 2px solid #368CA8;
+}
+
+.notification-message h2 {
+  background: #368CA8;
+}
+
+.notification-message p {
+  color: #368CA8;
 }

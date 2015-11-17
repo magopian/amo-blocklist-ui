@@ -43,4 +43,8 @@ export default class CollectionActions {
   clearError() {
     this._emit("clearError");
   }
+
+  clearMessage() {
+    this._emit("clearMessage");
+  }
 }

@@ -23,20 +23,37 @@ class AdvancedActions extends React.Component {
   }
 }
 
-class ErrorNotification extends React.Component {
+class Notification extends React.Component {
   onCloseClick(event) {
     event.preventDefault();
-    this.props.actions.clearError();
+    this.props.close();
   }
 
   render() {
-    if (!this.props.error) {
-      return null;
-    }
-    return <div className="error-notification">
+    return <div className={`notification notification-${this.props.type}`}>
       <a className="close" href="" onClick={this.onCloseClick.bind(this)}>✖</a>
-      <h2>Error</h2>
-      <p>{this.props.error.message}</p>
+      <h2>{this.props.title}</h2>
+      <p>{this.props.message}</p>
+    </div>;
+  }
+}
+
+class NotificationArea extends React.Component {
+  render() {
+    const actions = this.props.actions;
+    return <div className="notifications">
+      {this.props.error ?
+        <Notification
+          type="error"
+          title="Error"
+          message={this.props.error.message}
+          close={actions.clearError.bind(actions)} /> : null}
+      {this.props.message ?
+        <Notification
+          title={"Info"}
+          type="message"
+          message={this.props.message}
+          close={actions.clearMessage.bind(actions)} /> : null}
     </div>;
   }
 }
@@ -89,7 +106,9 @@ export default class Collection extends React.Component {
     return (
       <div>
         <h1>{this.props.label}</h1>
-        <ErrorNotification error={this.state.error}
+        <NotificationArea
+          message={this.state.message}
+          error={this.state.error}
           actions={this.props.actions} />
         {this.state.records.length === 0 ?
           <p>This collection is empty.</p> :

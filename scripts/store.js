@@ -9,7 +9,7 @@ export default class Store {
     this.kinto = kinto;
     this.collName = collName;
     this.events = events;
-    this.state = {busy: false, error: null, records: []};
+    this.state = {busy: false, error: null, message: null, records: []};
     this.collection = this.kinto.collection(collName);
     this._respondTo("create", this.create.bind(this));
     this._respondTo("update", this.update.bind(this));
@@ -18,6 +18,7 @@ export default class Store {
     this._respondTo("sync", this.sync.bind(this));
     this._respondTo("resetSync", this.resetSync.bind(this));
     this._respondTo("clearError", this.clearError.bind(this));
+    this._respondTo("clearMessage", this.clearMessage.bind(this));
   }
 
   getState() {
@@ -43,16 +44,23 @@ export default class Store {
     return this.events.on([this.collName, storeEvent], listener);
   }
 
-  _execute(promise) {
-    this.setState({busy: true});
+  _execute(promise, options={message: null}) {
+    this.setState({busy: true, message: null});
     return Promise.resolve(promise)
       .then(_ => this.collection.list())
-      .then(res => this.setState({busy: false, error: null, records: res.data}))
-      .catch(error => this.setState({busy: false, error}));
+      .then(res => this.setState({
+        busy: false,
+        error: null,
+        records: res.data,
+        message: options.message
+      }))
+      .catch(error => this.setState({busy: false, error, message: null}));
   }
 
   create(record) {
-    return this._execute(this.collection.create(record));
+    return this._execute(this.collection.create(record), {
+      message: "The record has been created."
+    });
   }
 
   update(id, record) {
@@ -61,11 +69,15 @@ export default class Store {
         const last_modified = res.data.last_modified;
         const updated = Object.assign({}, record, {id, last_modified});
         return this.collection.update(updated);
-      }));
+      }), {
+        message: `Record ${id} have been updated.`
+      });
   }
 
   delete(id) {
-    return this._execute(this.collection.delete(id));
+    return this._execute(this.collection.delete(id), {
+      message: `Record ${id} has been deleted.`
+    });
   }
 
   load() {
@@ -73,14 +85,23 @@ export default class Store {
   }
 
   sync(options=SYNC_DEFAULT_OPTIONS) {
-    return this._execute(this.collection.sync(options));
+    return this._execute(this.collection.sync(options), {
+      message: "The collection has been synchronized."
+    });
   }
 
   resetSync() {
-    return this._execute(this.collection.resetSyncStatus());
+    return this._execute(this.collection.resetSyncStatus(), {
+      message: "All local record sync statuses have been resetted."
+    });
   }
 
   clearError() {
     this.setState({error: null});
+  }
+
+  clearMessage() {
+    console.log('plop');
+    this.setState({message: null});
   }
 }
