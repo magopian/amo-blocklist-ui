@@ -54,8 +54,13 @@ export default class Store {
     return this._execute(this.collection.create(record));
   }
 
-  update(record) {
-    return this._execute(this.collection.update(record));
+  update(id, record) {
+    return this._execute(this.collection.get(id)
+      .then(res => {
+        const last_modified = res.data.last_modified;
+        const updated = Object.assign({}, record, {id, last_modified});
+        return this.collection.update(updated);
+      }));
   }
 
   delete(id) {

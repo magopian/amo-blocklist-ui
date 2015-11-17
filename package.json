@@ -12,7 +12,6 @@
   "dependencies": {
     "btoa": "^1.1.2",
     "eventemitter2": "^0.4.14",
-    "history": "^1.13.0",
     "jsonschema": "^1.0.2",
     "kinto": "^1.1.0",
     "react": "^0.13.1"

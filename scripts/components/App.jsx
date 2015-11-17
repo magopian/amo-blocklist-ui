@@ -17,10 +17,7 @@ class Form extends React.Component {
     if (this.props.action === "add") {
       this.props.actions.create(data.formData);
     } else if (this.props.action === "edit") {
-      const id = this.props.original.id;
-      const last_modified = this.props.original.last_modified;
-      this.props.actions.update(
-        Object.assign({}, data.formData, {id, last_modified}));
+      this.props.actions.update(this.props.original.id, data.formData);
     }
     this.props.actions.load();
   }

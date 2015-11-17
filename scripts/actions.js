@@ -4,8 +4,8 @@ export default class CollectionActions {
     this.events = events;
   }
 
-  _emit(event, data) {
-    this.events.emit([this.name, event], data);
+  _emit(event, ...args) {
+    this.events.emit.apply(this.events, [[this.name, event], ...args]);
   }
 
   add() {
@@ -20,8 +20,8 @@ export default class CollectionActions {
     this._emit("edit", record);
   }
 
-  update(record) {
-    this._emit("update", record);
+  update(id, record) {
+    this._emit("update", id, record);
   }
 
   delete(id) {
