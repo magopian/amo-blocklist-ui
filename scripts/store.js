@@ -17,6 +17,7 @@ export default class Store {
     this._respondTo("load", this.load.bind(this));
     this._respondTo("sync", this.sync.bind(this));
     this._respondTo("resetSync", this.resetSync.bind(this));
+    this._respondTo("clearError", this.clearError.bind(this));
   }
 
   getState() {
@@ -77,5 +78,9 @@ export default class Store {
 
   resetSync() {
     return this._execute(this.collection.resetSyncStatus());
+  }
+
+  clearError() {
+    this.setState({error: null});
   }
 }

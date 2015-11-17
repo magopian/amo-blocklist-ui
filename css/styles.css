@@ -142,3 +142,33 @@ p.actions a {
   font-size: .8em;
   margin-left: 1em;
 }
+
+.error-notification {
+  border: 2px solid #C13832;
+  border-radius: 8px;
+  margin-bottom: 1em;
+}
+
+.error-notification .close {
+  position: fixed;
+  right: 1.5vw;
+  font-size: 1.2em;
+  color: white;
+  border: 0;
+  padding-top: .2em;
+}
+
+.error-notification h2 {
+  background: #C13832;
+  color: white;
+  margin: 0;
+  font-size: 1em;
+  padding: .1em .4em .3em .4em;
+}
+
+.error-notification p {
+  margin: .5em 0;
+  padding: 0 .5em;
+  color: #C13832;
+  font-size: .8em;
+}

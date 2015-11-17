@@ -39,4 +39,8 @@ export default class CollectionActions {
   resetSync() {
     this._emit("resetSync");
   }
+
+  clearError() {
+    this._emit("clearError");
+  }
 }

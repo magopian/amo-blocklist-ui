@@ -23,6 +23,24 @@ class AdvancedActions extends React.Component {
   }
 }
 
+class ErrorNotification extends React.Component {
+  onCloseClick(event) {
+    event.preventDefault();
+    this.props.actions.clearError();
+  }
+
+  render() {
+    if (!this.props.error) {
+      return null;
+    }
+    return <div className="error-notification">
+      <a className="close" href="" onClick={this.onCloseClick.bind(this)}>✖</a>
+      <h2>Error</h2>
+      <p>{this.props.error.message}</p>
+    </div>;
+  }
+}
+
 export default class Collection extends React.Component {
   constructor(props) {
     super(props);
@@ -71,6 +89,8 @@ export default class Collection extends React.Component {
     return (
       <div>
         <h1>{this.props.label}</h1>
+        <ErrorNotification error={this.state.error}
+          actions={this.props.actions} />
         {this.state.records.length === 0 ?
           <p>This collection is empty.</p> :
           <RecordList
