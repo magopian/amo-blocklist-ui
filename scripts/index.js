@@ -1,5 +1,6 @@
 import "babel/polyfill";
 import React from "react";
+import { render } from "react-dom";
 import Kinto from "kinto";
 import Store from "./store";
 import EventEmitter from "eventemitter2";
@@ -47,7 +48,7 @@ const collections = {
   }
 };
 
-React.render((
+render((
   <App events={events}
        collections={collections}
        defaultCollection="addons" />

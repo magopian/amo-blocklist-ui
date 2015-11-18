@@ -4,7 +4,6 @@
   "description": "AMO blocklist UI.",
   "scripts": {
     "build": "NODE_ENV=production node_modules/.bin/webpack --optimize-minimize --config webpack.prod.js && cp index.html style.css build/",
-    "cosmos": "component-playground --components-path scripts/components",
     "publish": "npm run build && node_modules/.bin/gh-pages --dist build/",
     "start": "node_modules/.bin/webpack-dev-server --config webpack.dev.js --port=3000",
     "test": "node_modules/.bin/mocha --recursive --compilers js:babel/register --require ./test/setup-jsdom.js test/"
@@ -14,13 +13,13 @@
     "eventemitter2": "^0.4.14",
     "jsonschema": "^1.0.2",
     "kinto": "^1.1.0",
-    "react": "^0.13.1"
+    "react": "^0.14.2",
+    "react-dom": "^0.14.2"
   },
   "devDependencies": {
     "babel": "^5.8.20",
     "babel-loader": "^5.3.2",
     "chai": "^3.2.0",
-    "cosmos-js": "^0.6.9",
     "css-loader": "^0.15.6",
     "eslint": "^1.8.0",
     "eslint-plugin-react": "^3.6.3",
