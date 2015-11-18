@@ -101,7 +101,6 @@ export default class Store {
   }
 
   clearMessage() {
-    console.log('plop');
     this.setState({message: null});
   }
 }
