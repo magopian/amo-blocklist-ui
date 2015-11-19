@@ -1,4 +1,27 @@
 import React, { Component } from "react";
+import LinkButton from "./LinkButton";
+
+class AdvancedActions extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {enabled: false};
+  }
+
+  onAdvancedLinkClick(event) {
+    event.preventDefault();
+    this.setState({enabled: true});
+  }
+
+  render() {
+    if (this.state.enabled) {
+      return <button type="button"
+        onClick={this.props.resetSync}>Reset Sync Status</button>;
+    }
+    return <a href="" onClick={this.onAdvancedLinkClick.bind(this)}>
+      &raquo; Show advanced actions
+    </a>;
+  }
+}
 
 class Row extends Component {
   static get defaultProps() {
@@ -99,6 +122,16 @@ export default class CollectionList extends Component {
     this.props.load();
   }
 
+  onSyncClick() {
+    this.props.actions.sync();
+  }
+
+  onResetSyncClick() {
+    if (confirm("Are you sure?")) {
+      this.props.actions.resetSync();
+    }
+  }
+
   render() {
     const {name, schema, records} = this.props.collection;
     if (!name) {
@@ -112,6 +145,12 @@ export default class CollectionList extends Component {
           records={records}
           schema={schema}
           displayFields={displayFields} />
+        <p className="actions">
+          <button type="button"
+            onClick={this.onSyncClick.bind(this)}>Synchronize</button>
+          <LinkButton label="Add" to={`/collections/${name}/add`} />
+          <AdvancedActions resetSync={this.onResetSyncClick.bind(this)} />
+        </p>
       </div>
     );
   }

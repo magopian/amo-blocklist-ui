@@ -140,7 +140,7 @@ table.record-list td.actions {
 
 p.actions a {
   font-size: .8em;
-  margin-left: 1em;
+  margin-left: .5em;
 }
 
 .notification {
@@ -192,4 +192,9 @@ p.actions a {
 
 .notification-message p {
   color: #368CA8;
+}
+
+a.link-button {
+  text-decoration: none;
+  border: none;
 }
