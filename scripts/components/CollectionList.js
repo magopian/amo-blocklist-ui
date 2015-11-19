@@ -105,12 +105,12 @@ class Table extends Component {
 
 export default class CollectionList extends Component {
   componentDidMount() {
-    this.initialize(this.props.routeParams.name);
+    this.initialize(this.props.params.name);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.routeParams.name !== nextProps.routeParams.name) {
-      this.initialize(nextProps.routeParams.name);
+    if (this.props.params.name !== nextProps.params.name) {
+      this.initialize(nextProps.params.name);
     }
   }
 

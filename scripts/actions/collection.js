@@ -46,6 +46,9 @@ export function message(message) {
 function withCollection(fn) {
   return (dispatch, getState) => {
     const collName = getState().collection.name;
+    if (!collName) {
+      throw new Error("Missing collection name.");
+    }
     const collection = kinto.collection(collName);
     dispatch(schema(schemas[collName]));
     return fn(dispatch, collection);

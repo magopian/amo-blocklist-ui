@@ -3,16 +3,16 @@ import { Link } from "react-router";
 
 export default class Sidebar extends Component {
   render() {
-    const {collections, routeParams} = this.props;
+    const {collections, params} = this.props;
     return (
       <ul>
-        <li className={routeParams.name ? "" : "active"}>
+        <li className={params.name ? "" : "active"}>
           <Link to="/">Home</Link>
         </li>
         {
           Object.keys(collections).map((name, index) => {
             return <li key={index}
-              className={routeParams.name === name ? "active" : ""}>
+              className={params.name === name ? "active" : ""}>
               <Link to={`/collections/${name}`}>{name}</Link>
             </li>;
           })
