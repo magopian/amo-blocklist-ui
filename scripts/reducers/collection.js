@@ -1,10 +1,12 @@
 import {
   COLLECTION_BUSY,
   COLLECTION_LOADED,
-  COLLECTION_SCHEMA
+  COLLECTION_SCHEMA,
+  COLLECTION_SELECTED
 } from "../actions/collection";
 
 const INITIAL_STATE = {
+  name: null,
   busy: false,
   schema: {},
   records: [],
@@ -12,9 +14,10 @@ const INITIAL_STATE = {
 
 export function collection(state = INITIAL_STATE, action) {
   switch (action.type) {
-  // XXX listen to INIT action to initiate loading?
+  case COLLECTION_SELECTED:
+    return {...state, name: action.name};
   case COLLECTION_BUSY:
-    return {...state, busy: action.busy};
+    return {...state, busy: action.flag};
   case COLLECTION_LOADED:
     return {...state, records: action.records};
   case COLLECTION_SCHEMA:

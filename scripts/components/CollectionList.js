@@ -1,21 +1,29 @@
-import React from "react";
+import React, { Component } from "react";
 
 
-export default class CollectionListPage extends React.Component {
+export default class CollectionListPage extends Component {
   componentDidMount() {
-    this.props.load(this.props.routeParams.name);
+    this.initialize(this.props.routeParams.name);
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.routeParams.name !== nextProps.routeParams.name) {
-      this.props.load(nextProps.routeParams.name);
+      this.initialize(nextProps.routeParams.name);
     }
   }
 
+  initialize(collectionName) {
+    this.props.select(collectionName);
+    this.props.load();
+  }
+
   render() {
+    const {name, busy, schema, records} = this.props.collection;
     return <div>
-      <h1>{this.props.routeParams.name}</h1>
-      <p>Yo.</p>
+      <h1>{name}</h1>
+      <p>busy: {busy.toString()}</p>
+      <p>schema: {(!!schema).toString()}</p>
+      <p>{records.toString()}</p>
     </div>;
   }
 }
