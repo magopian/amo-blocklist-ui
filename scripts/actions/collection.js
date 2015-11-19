@@ -35,26 +35,52 @@ export function schema(schema) {
   return {type: COLLECTION_SCHEMA, schema};
 }
 
+function getCollection(collName) {
+  return kinto.collection(collName);
+}
+
 // Async
-export function load() {
+function withCollection(fn) {
   return (dispatch, getState) => {
     const collName = getState().collection.name;
+    const collection = kinto.collection(collName);
     dispatch(schema(schemas[collName]));
-    dispatch(busy(true));
-    return kinto.collection(collName).list()
-      .then(res => dispatch(loaded(res.data)))
-      .catch(err => dispatch(error(err)))
-      .then(_ => dispatch(busy(false)));
+    return fn(dispatch, collection);
   };
 }
 
-export function create(record) {
-  return (dispatch, getState) => {
-    const collName = getState().collection.name;
+// function execute(fn) {
+//   return withCollection((dispatch, collection) => {
+//     dispatch(busy(true));
+//   });
+// }
+
+export function load() {
+  return withCollection((dispatch, collection) => {
     dispatch(busy(true));
-    return kinto.collection(collName).create(record)
+    return collection.list()
+      .then(res => dispatch(loaded(res.data)))
+      .catch(err => dispatch(error(err)))
+      .then(_ => dispatch(busy(false)));
+  });
+}
+
+export function create(record) {
+  return withCollection((dispatch, collection) => {
+    dispatch(busy(true));
+    return collection.create(record)
       .then(res => dispatch(load()))
       .catch(err => dispatch(error(err)))
       .then(_ => dispatch(busy(false)));
-  };
+  });
+}
+
+export function deleteRecord(id) {
+  return withCollection((dispatch, collection) => {
+    dispatch(busy(true));
+    return collection.delete(id)
+      .then(res => dispatch(load()))
+      .catch(err => dispatch(error(err)))
+      .then(_ => dispatch(busy(false)));
+  });
 }

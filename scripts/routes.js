@@ -5,6 +5,7 @@ import HomePage from "./containers/HomePage";
 import Sidebar from "./containers/Sidebar";
 import CollectionListPage from "./containers/CollectionListPage";
 import AddFormPage from "./containers/AddFormPage";
+import EditFormPage from "./containers/EditFormPage";
 
 export default (
   <Route path="/" component={App}>
@@ -18,6 +19,10 @@ export default (
     }} />
     <Route path="/collections/:name/add" components={{
       content: AddFormPage,
+      sidebar: Sidebar,
+    }} />
+    <Route path="/collections/:name/edit/:id" components={{
+      content: EditFormPage,
       sidebar: Sidebar,
     }} />
   </Route>

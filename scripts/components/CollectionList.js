@@ -40,18 +40,14 @@ class Row extends Component {
     return new Date(lastModified).toJSON();
   }
 
-  onEditClick(event) {
-    //this.props.actions.edit(this.props.record);
-  }
-
   onDeleteClick(event) {
     if (confirm("Are you sure?")) {
-      //this.props.actions.delete(this.props.record.id);
+      this.props.deleteRecord(this.props.record.id);
     }
   }
 
   render() {
-    const { record } = this.props;
+    const { name, record } = this.props;
     return <tr className={record._status !== "synced" ? "unsynced" : ""}>
       {
         this.props.displayFields.map((displayField, index) => {
@@ -61,8 +57,8 @@ class Row extends Component {
       <td className="lastmod">{this.lastModified}</td>
       <td className="status">{record._status}</td>
       <td className="actions">
-        <button type="button"
-          onClick={this.onEditClick.bind(this)}>Edit</button>
+        <LinkButton label="Edit"
+          to={`/collections/${name}/edit/${record.id}`} />
         <button type="button"
           onClick={this.onDeleteClick.bind(this)}>Delete</button>
       </td>
@@ -72,7 +68,7 @@ class Row extends Component {
 
 class Table extends Component {
   render() {
-    const {records, schema, displayFields} = this.props;
+    const {name, records, schema, displayFields, deleteRecord} = this.props;
     if (records.length === 0) {
       return <p>This collection is empty.</p>;
     }
@@ -98,7 +94,8 @@ class Table extends Component {
               name={name}
               record={record}
               schema={schema}
-              displayFields={displayFields} />;
+              displayFields={displayFields}
+              deleteRecord={deleteRecord} />;
           })
         }</tbody>
       </table>
@@ -134,6 +131,7 @@ export default class CollectionList extends Component {
 
   render() {
     const {name, schema, records} = this.props.collection;
+    const {deleteRecord} = this.props;
     if (!name) {
       return <p>Loading...</p>;
     }
@@ -142,9 +140,11 @@ export default class CollectionList extends Component {
       <div>
         <h1>{name}</h1>
         <Table
+          name={name}
           records={records}
           schema={schema}
-          displayFields={displayFields} />
+          displayFields={displayFields}
+          deleteRecord={deleteRecord} />
         <p className="actions">
           <button type="button"
             onClick={this.onSyncClick.bind(this)}>Synchronize</button>
