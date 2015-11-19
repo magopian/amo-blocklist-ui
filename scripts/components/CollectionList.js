@@ -120,7 +120,7 @@ export default class CollectionList extends Component {
   }
 
   onSyncClick() {
-    this.props.actions.sync();
+    this.props.sync();
   }
 
   onResetSyncClick() {
@@ -130,7 +130,7 @@ export default class CollectionList extends Component {
   }
 
   render() {
-    const {name, schema, records} = this.props.collection;
+    const {name, message, schema, records} = this.props.collection;
     const {deleteRecord} = this.props;
     if (!name) {
       return <p>Loading...</p>;
@@ -139,6 +139,7 @@ export default class CollectionList extends Component {
     return (
       <div>
         <h1>{name}</h1>
+        <p>message: {message}</p>
         <Table
           name={name}
           records={records}
