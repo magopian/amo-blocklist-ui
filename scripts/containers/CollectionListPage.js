@@ -5,7 +5,8 @@ import * as CollectionActions from "../actions/collection";
 
 function mapStateToProps(state) {
   return {
-    collection: state.collection
+    collection: state.collection,
+    collections: state.collections,
   };
 }
 

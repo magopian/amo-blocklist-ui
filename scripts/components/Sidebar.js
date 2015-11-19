@@ -10,10 +10,10 @@ export default class Sidebar extends Component {
           <Link to="/">Home</Link>
         </li>
         {
-          collections.map((collection, index) => {
+          Object.keys(collections).map((name, index) => {
             return <li key={index}
-              className={routeParams.name === collection ? "active" : ""}>
-              <Link to={`/collections/${collection}`}>{collection}</Link>
+              className={routeParams.name === name ? "active" : ""}>
+              <Link to={`/collections/${name}`}>{name}</Link>
             </li>;
           })
         }
