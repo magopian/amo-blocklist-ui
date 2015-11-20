@@ -119,7 +119,7 @@ export function sync(options) {
 
 export function resetSync() {
   return withCollection((dispatch, collection) => {
-    return execute(dispatch, collection.resetSync(), {
+    return execute(dispatch, collection.resetSyncStatus(), {
       message: "All local record sync statuses have been reset."
     });
   });

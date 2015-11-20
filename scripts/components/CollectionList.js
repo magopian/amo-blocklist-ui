@@ -126,7 +126,7 @@ export default class CollectionList extends Component {
 
   onResetSyncClick() {
     if (confirm("Are you sure?")) {
-      this.props.actions.resetSync();
+      this.props.resetSync();
     }
   }
 
