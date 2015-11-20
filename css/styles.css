@@ -66,6 +66,11 @@ body {
     color: #eee;
   }
 
+.sidebar hr {
+  border: none;
+  border-top: 1px solid #F6F4EC;
+}
+
 .content {
   padding: .5em 1vw 0 21vw;
 }

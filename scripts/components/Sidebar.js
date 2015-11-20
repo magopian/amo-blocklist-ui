@@ -2,13 +2,21 @@ import React, { Component} from "react";
 import { Link } from "react-router";
 
 export default class Sidebar extends Component {
+  activeIfPathname(pathname) {
+    return this.props.location.pathname === pathname ? "active" : "";
+  }
+
   render() {
     const {collections, params} = this.props;
     return (
       <ul>
-        <li className={params.name ? "" : "active"}>
+        <li className={this.activeIfPathname("/")}>
           <Link to="/">Home</Link>
         </li>
+        <li className={this.activeIfPathname("/settings")}>
+          <Link to="/settings">Settings</Link>
+        </li>
+        <hr/>
         {
           Object.keys(collections).map((name, index) => {
             return <li key={index}

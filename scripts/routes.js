@@ -7,6 +7,7 @@ import Notifications from "./containers/Notifications";
 import CollectionListPage from "./containers/CollectionListPage";
 import AddFormPage from "./containers/AddFormPage";
 import EditFormPage from "./containers/EditFormPage";
+import SettingsPage from "./containers/SettingsPage";
 
 export default (
   <Route path="/" component={App}>
@@ -28,6 +29,11 @@ export default (
     <Route path="/collections/:name/edit/:id" components={{
       notifications: Notifications,
       content: EditFormPage,
+      sidebar: Sidebar,
+    }} />
+    <Route path="/settings" components={{
+      notifications: Notifications,
+      content: SettingsPage,
       sidebar: Sidebar,
     }} />
   </Route>
