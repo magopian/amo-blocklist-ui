@@ -115,6 +115,7 @@ export default class CollectionList extends Component {
   }
 
   initialize(collectionName) {
+    this.props.clearNotifications();
     const config = this.props.collections[collectionName].config;
     this.props.select(collectionName, config);
     this.props.load();

@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import EditForm from "../components/EditForm";
 import * as CollectionActions from "../actions/collection";
 import * as FormActions from "../actions/form";
+import * as NotificationsActions from "../actions/notifications";
 
 function mapStateToProps(state) {
   return {
@@ -13,7 +14,10 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  const combinedActions = Object.assign({}, CollectionActions, FormActions);
+  const combinedActions = Object.assign({},
+    CollectionActions,
+    FormActions,
+    NotificationsActions);
   return bindActionCreators(combinedActions, dispatch);
 }
 

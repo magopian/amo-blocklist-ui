@@ -2,6 +2,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import AddForm from "../components/AddForm";
 import * as CollectionActions from "../actions/collection";
+import * as NotificationsActions from "../actions/notifications";
 
 function mapStateToProps(state) {
   return {
@@ -12,7 +13,8 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(CollectionActions, dispatch);
+  return bindActionCreators(
+    Object.assign({}, CollectionActions, NotificationsActions), dispatch);
 }
 
 export default connect(

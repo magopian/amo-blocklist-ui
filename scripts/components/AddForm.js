@@ -4,6 +4,7 @@ import GenericForm from "./GenericForm";
 
 export default class AddForm extends Component {
   componentDidMount() {
+    this.props.clearNotifications();
     this.props.select(this.props.params.name);
   }
 

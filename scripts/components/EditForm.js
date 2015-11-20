@@ -4,6 +4,7 @@ import GenericForm from "./GenericForm";
 
 export default class EditForm extends Component {
   componentDidMount() {
+    this.props.clearNotifications();
     this.props.select(this.props.params.name);
     this.props.loadRecord(this.props.params.id);
   }

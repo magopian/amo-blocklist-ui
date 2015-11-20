@@ -182,15 +182,15 @@ p.actions a {
   color: #C13832;
 }
 
-.notification-message {
+.notification-info {
   border: 2px solid #368CA8;
 }
 
-.notification-message h2 {
+.notification-info h2 {
   background: #368CA8;
 }
 
-.notification-message p {
+.notification-info p {
   color: #368CA8;
 }
 

@@ -2,6 +2,7 @@ import Kinto from "kinto";
 import btoa from "btoa";
 import schemas from "../../schemas";
 
+import * as NotificationsActions from "./notifications";
 import * as FormActions from "./form";
 
 export const COLLECTION_LOADED = "COLLECTION_LOADED";
@@ -69,6 +70,9 @@ function execute(dispatch, promise, options = {}) {
     .catch(err => dispatch(error(err)))
     .then(res => {
       dispatch(message(options.message || null));
+      if (options.message) {
+        dispatch(NotificationsActions.notifyInfo(options.message));
+      }
       dispatch(busy(false));
       dispatch(load());
     });
