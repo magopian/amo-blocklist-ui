@@ -250,10 +250,13 @@ class ErrorList extends React.Component {
 export default class GenericForm extends React.Component {
   constructor(props) {
     super(props);
+    const edit = !!props.formData;
+    const formData = props.formData || this.props.schema.default || {};
     this.state = {
       status: "initial",
-      formData: props.formData || this.props.schema.default || {},
-      errors: []
+      formData,
+      edit,
+      errors: edit ? this.validate(formData) : []
     };
   }
 
@@ -263,7 +266,7 @@ export default class GenericForm extends React.Component {
   }
 
   renderErrors() {
-    if (this.state.status === "submitted") {
+    if (this.state.edit && this.state.status !== "editing") {
       return <ErrorList errors={this.state.errors} />;
     }
     return null;

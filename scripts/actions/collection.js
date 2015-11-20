@@ -2,6 +2,8 @@ import Kinto from "kinto";
 import btoa from "btoa";
 import schemas from "../../schemas";
 
+import * as FormActions from "./form";
+
 export const COLLECTION_LOADED = "COLLECTION_LOADED";
 export const COLLECTION_BUSY = "COLLECTION_BUSY";
 export const COLLECTION_ERROR = "COLLECTION_ERROR";
@@ -37,9 +39,7 @@ function busy(flag) {
 }
 
 function message(message) {
-  if (message) {
-    return {type: COLLECTION_MESSAGE, message};
-  }
+  return {type: COLLECTION_MESSAGE, message};
 }
 
 // Async
@@ -64,10 +64,11 @@ function withCollection(fn) {
 
 function execute(dispatch, promise, options = {}) {
   dispatch(busy(true));
+  dispatch(message(null));
   return Promise.resolve(promise)
     .catch(err => dispatch(error(err)))
     .then(res => {
-      dispatch(message(options.message));
+      dispatch(message(options.message || null));
       dispatch(busy(false));
       dispatch(load());
     });
@@ -78,17 +79,21 @@ export function load() {
     dispatch(busy(true));
     return collection.list()
       .catch(err => dispatch(error(err)))
-      .then(res => {
-        dispatch(busy(false));
-        dispatch(loaded(res.data));
-      });
+      .then(res => dispatch(loaded(res.data)));
+  });
+}
+
+export function loadRecord(id) {
+  return withCollection((dispatch, collection) => {
+    return collection.get(id)
+      .then(res => dispatch(FormActions.recordLoaded(res.data)));
   });
 }
 
 export function create(record) {
   return withCollection((dispatch, collection) => {
     return execute(dispatch, collection.create(record), {
-      message: "The record has been created."
+      message: "The record has been created.",
     });
   });
 }
@@ -96,7 +101,7 @@ export function create(record) {
 export function update(record) {
   return withCollection((dispatch, collection) => {
     return execute(dispatch, collection.update(record), {
-      message: `Record ${record.id} has been updated.`
+      message: `Record ${record.id} has been updated.`,
     });
   });
 }
@@ -104,7 +109,7 @@ export function update(record) {
 export function deleteRecord(id) {
   return withCollection((dispatch, collection) => {
     return execute(dispatch, collection.delete(id), {
-      message: `Record ${id} has been deleted.`
+      message: `Record ${id} has been deleted.`,
     });
   });
 }
@@ -112,7 +117,7 @@ export function deleteRecord(id) {
 export function sync(options) {
   return withCollection((dispatch, collection) => {
     return execute(dispatch, collection.sync(options), {
-      message: "The collection has been synchronized."
+      message: "The collection has been synchronized.",
     });
   });
 }
@@ -120,7 +125,7 @@ export function sync(options) {
 export function resetSync() {
   return withCollection((dispatch, collection) => {
     return execute(dispatch, collection.resetSyncStatus(), {
-      message: "All local record sync statuses have been reset."
+      message: "All local record sync statuses have been reset.",
     });
   });
 }

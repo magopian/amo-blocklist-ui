@@ -1,12 +1,22 @@
-import React, { Component } from "react";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import AddForm from "../components/AddForm";
+import * as CollectionActions from "../actions/collection";
 
-export default class AddFormPage extends Component {
-  render() {
-    const {name} = this.props.params;
-    // XXX back link
-    return <div>
-      <h1>{name}</h1>
-      <p>add form here.</p>
-    </div>;
-  }
+function mapStateToProps(state) {
+  return {
+    name: state.collection.name,
+    schema: state.collection.schema,
+    form: state.form,
+  };
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(CollectionActions, dispatch);
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddForm);
+

@@ -13,8 +13,8 @@
     "eventemitter2": "^0.4.14",
     "jsonschema": "^1.0.2",
     "kinto": "^1.1.0",
-    "react": "^0.14.2",
-    "react-dom": "^0.14.2"
+    "react": "^0.14.3",
+    "react-dom": "^0.14.3"
   },
   "devDependencies": {
     "babel": "^5.8.20",
@@ -30,6 +30,7 @@
     "react-redux": "^4.0.0",
     "react-router": "^1.0.0",
     "redux": "^3.0.4",
+    "redux-router": "^0.1.0",
     "redux-thunk": "^1.0.0",
     "sinon": "git://github.com/uberVU/Sinon.JS.git#0aaf834c9f",
     "style-loader": "^0.12.3",

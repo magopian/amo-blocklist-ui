@@ -27,7 +27,7 @@ export function collection(state = INITIAL_STATE, action) {
   case COLLECTION_BUSY:
     return {...state, busy: action.flag};
   case COLLECTION_LOADED:
-    return {...state, records: action.records};
+    return {...state, busy: false, records: action.records};
   case COLLECTION_MESSAGE:
     return {...state, message: action.message};
   default:
