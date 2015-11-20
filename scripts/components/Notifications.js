@@ -10,7 +10,10 @@ class Notification extends Component {
     return (
       <div className={`notification notification-${this.props.type}`}>
         <a className="close" href="" onClick={this.onCloseClick.bind(this)}>✖</a>
-        <h2>{this.props.title || "Info"}</h2>
+        <h2>
+          {this.props.title || "Info"}{" "}
+          <small>[{new Date(this.props.time).toLocaleString()}]</small>
+        </h2>
         <p>{this.props.message}</p>
       </div>
     );

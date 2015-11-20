@@ -7,12 +7,12 @@ import * as FormActions from "./form";
 
 export const COLLECTION_LOADED = "COLLECTION_LOADED";
 export const COLLECTION_BUSY = "COLLECTION_BUSY";
-export const COLLECTION_ERROR = "COLLECTION_ERROR";
 export const COLLECTION_READY = "COLLECTION_READY";
-export const COLLECTION_MESSAGE = "COLLECTION_MESSAGE";
 
 const kinto = new Kinto({
   remote:   "http://0.0.0.0:8888/v1",
+  // XXX for custom bucket, need creation
+  // bucket: "blocklist",
   dbPrefix: "user",
   headers:  {Authorization: "Basic " + btoa("user:")}
 });
@@ -31,16 +31,8 @@ function loaded(records) {
   return {type: COLLECTION_LOADED, records};
 }
 
-function error(err) {
-  return {type: COLLECTION_ERROR, error: err};
-}
-
 function busy(flag) {
   return {type: COLLECTION_BUSY, flag};
-}
-
-function message(message) {
-  return {type: COLLECTION_MESSAGE, message};
 }
 
 // Async
@@ -64,17 +56,18 @@ function withCollection(fn) {
 }
 
 function execute(dispatch, promise, options = {}) {
+  dispatch(NotificationsActions.clearNotifications());
   dispatch(busy(true));
-  dispatch(message(null));
   return Promise.resolve(promise)
-    .catch(err => dispatch(error(err)))
     .then(res => {
-      dispatch(message(options.message || null));
       if (options.message) {
         dispatch(NotificationsActions.notifyInfo(options.message));
       }
       dispatch(busy(false));
       dispatch(load());
+    })
+    .catch(err => {
+      dispatch(NotificationsActions.notifyError(err));
     });
 }
 
@@ -82,8 +75,8 @@ export function load() {
   return withCollection((dispatch, collection) => {
     dispatch(busy(true));
     return collection.list()
-      .catch(err => dispatch(error(err)))
-      .then(res => dispatch(loaded(res.data)));
+      .then(res => dispatch(loaded(res.data)))
+      .catch(err => dispatch(NotificationsActions.notifyError(err)));
   });
 }
 

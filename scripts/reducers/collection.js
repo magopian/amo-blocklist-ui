@@ -2,12 +2,10 @@ import {
   COLLECTION_BUSY,
   COLLECTION_LOADED,
   COLLECTION_READY,
-  COLLECTION_MESSAGE
 } from "../actions/collection";
 
 const INITIAL_STATE = {
   name: null,
-  message: null,
   busy: false,
   schema: {},
   displayFields: [],
@@ -28,8 +26,6 @@ export function collection(state = INITIAL_STATE, action) {
     return {...state, busy: action.flag};
   case COLLECTION_LOADED:
     return {...state, busy: false, records: action.records};
-  case COLLECTION_MESSAGE:
-    return {...state, message: action.message};
   default:
     return state;
   }

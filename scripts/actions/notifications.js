@@ -7,7 +7,8 @@ function notify(type, message) {
     type: NOTIFICATION_ADDED,
     notification: {
       type,
-      message
+      message,
+      time: new Date().getTime(),
     },
   };
 }
