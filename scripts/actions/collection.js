@@ -4,9 +4,8 @@ import schemas from "../../schemas";
 
 export const COLLECTION_LOADED = "COLLECTION_LOADED";
 export const COLLECTION_BUSY = "COLLECTION_BUSY";
-export const COLLECTION_SCHEMA = "COLLECTION_SCHEMA";
 export const COLLECTION_ERROR = "COLLECTION_ERROR";
-export const COLLECTION_SELECTED = "COLLECTION_SELECTED";
+export const COLLECTION_READY = "COLLECTION_READY";
 export const COLLECTION_MESSAGE = "COLLECTION_MESSAGE";
 
 const kinto = new Kinto({
@@ -16,42 +15,50 @@ const kinto = new Kinto({
 });
 
 // Sync
-export function select(name) {
-  return {type: COLLECTION_SELECTED, name};
+function configure(name, config) {
+  return {
+    type: COLLECTION_READY,
+    name,
+    config,
+    schema: schemas[name],
+  };
 }
 
-export function loaded(records) {
+function loaded(records) {
   return {type: COLLECTION_LOADED, records};
 }
 
-export function error(err) {
+function error(err) {
   return {type: COLLECTION_ERROR, error: err};
 }
 
-export function busy(flag) {
+function busy(flag) {
   return {type: COLLECTION_BUSY, flag};
 }
 
-export function schema(schema) {
-  return {type: COLLECTION_SCHEMA, schema};
-}
-
-export function message(message) {
+function message(message) {
   if (message) {
     return {type: COLLECTION_MESSAGE, message};
   }
 }
 
 // Async
+export function select(name, config = {}) {
+  return (dispatch, getState) => {
+    // XXX error message if no config
+    const config = getState().collections[name].config;
+    dispatch(configure(name, config));
+  };
+}
+
 function withCollection(fn) {
   return (dispatch, getState) => {
     const collName = getState().collection.name;
     if (!collName) {
+      // XXX error message instead?
       throw new Error("Missing collection name.");
     }
-    const collection = kinto.collection(collName);
-    dispatch(schema(schemas[collName]));
-    return fn(dispatch, collection);
+    return fn(dispatch, kinto.collection(collName));
   };
 }
 

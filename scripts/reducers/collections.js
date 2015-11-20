@@ -1,24 +1,32 @@
 /**
- * For now this list is static but later on we'll add collections
- * dynamically.
+ * For now this list is static but later on we'll add collections and their
+ * config dynamically.
  */
 
 const INITIAL_STATE = {
   addons: {
     name: "addons",
-    displayFields: ["addonId"]
+    config: {
+      displayFields: ["addonId"],
+    },
   },
   certificates: {
     name: "certificates",
-    displayFields: ["issuerName"]
+    config: {
+      displayFields: ["issuerName"],
+    },
   },
   gfx: {
     name: "gfx",
-    displayFields: ["os", "vendor", "feature"],
+    config: {
+      displayFields: ["os", "vendor", "feature"],
+    },
   },
   plugins: {
     name: "plugins",
-    displayFields: ["matchName", "matchFilename", "matchDescription"],
+    config: {
+      displayFields: ["matchName", "matchFilename", "matchDescription"],
+    },
   },
 };
 

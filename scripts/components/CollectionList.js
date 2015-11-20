@@ -47,10 +47,10 @@ class Row extends Component {
   }
 
   render() {
-    const { name, record } = this.props;
+    const { name, record, config } = this.props;
     return <tr className={record._status !== "synced" ? "unsynced" : ""}>
       {
-        this.props.displayFields.map((displayField, index) => {
+        config.displayFields.map((displayField, index) => {
           return <td key={index}>{record[displayField]}</td>;
         })
       }
@@ -68,7 +68,7 @@ class Row extends Component {
 
 class Table extends Component {
   render() {
-    const {name, records, schema, displayFields, deleteRecord} = this.props;
+    const {name, records, schema, config, deleteRecord} = this.props;
     if (records.length === 0) {
       return <p>This collection is empty.</p>;
     }
@@ -77,7 +77,7 @@ class Table extends Component {
         <thead>
           <tr>
             {
-              displayFields.map((field, index) => {
+              config.displayFields.map((field, index) => {
                 return <th key={index}>{
                   schema.properties[field].title
                 }</th>;
@@ -94,7 +94,7 @@ class Table extends Component {
               name={name}
               record={record}
               schema={schema}
-              displayFields={displayFields}
+              config={config}
               deleteRecord={deleteRecord} />;
           })
         }</tbody>
@@ -115,7 +115,8 @@ export default class CollectionList extends Component {
   }
 
   initialize(collectionName) {
-    this.props.select(collectionName);
+    const config = this.props.collections[collectionName].config;
+    this.props.select(collectionName, config);
     this.props.load();
   }
 
@@ -130,12 +131,11 @@ export default class CollectionList extends Component {
   }
 
   render() {
-    const {name, message, schema, records} = this.props.collection;
+    const {name, message, schema, records, config} = this.props.collection;
     const {deleteRecord} = this.props;
     if (!name) {
       return <p>Loading...</p>;
     }
-    const displayFields = this.props.collections[name].displayFields;
     return (
       <div>
         <h1>{name}</h1>
@@ -144,7 +144,7 @@ export default class CollectionList extends Component {
           name={name}
           records={records}
           schema={schema}
-          displayFields={displayFields}
+          config={config}
           deleteRecord={deleteRecord} />
         <p className="actions">
           <button type="button"
