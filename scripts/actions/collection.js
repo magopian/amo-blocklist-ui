@@ -36,10 +36,15 @@ function busy(flag) {
 }
 
 // Async
-export function select(name, config = {}) {
+export function select(name) {
   return (dispatch, getState) => {
     // XXX error message if no config
-    const config = getState().collections[name].config;
+    const collections = getState().collections;
+    if (!collections.hasOwnProperty(name)) {
+      const error = new Error(`Collection "${name}" is not available.`);
+      return dispatch(NotificationsActions.notifyError(error));
+    }
+    const config = collections[name].config;
     dispatch(configure(name, config));
   };
 }

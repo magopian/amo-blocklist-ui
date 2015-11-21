@@ -36,5 +36,9 @@ export default (
       content: SettingsPage,
       sidebar: Sidebar,
     }} />
+    <Route path="*" components={{
+      sidebar: Sidebar,
+      content: _ => <h1>Page not found.</h1>
+    }}/>
   </Route>
 );
