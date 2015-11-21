@@ -37,14 +37,20 @@ body {
 .sidebar li {
   border-radius: 4px;
   margin-bottom: .5em;
-  padding: 0 1em;
+  padding: 0;
 }
 
-.sidebar li a {
+.sidebar li > a {
   display: block;
   width: 100%;
-  padding: 0;
+  padding-right: 1em;
   text-align: right;
+  color: #F6F4EC;
+  text-decoration: none;
+}
+
+.sidebar li > a:after {
+  content: "  ";
 }
 
 .sidebar li.active,
@@ -56,15 +62,6 @@ body {
 .sidebar li:hover a {
   color: #C13832;
 }
-
-.sidebar a {
-  color: #F6F4EC;
-  text-decoration: none;
-}
-
-  .sidebar a:hover {
-    color: #eee;
-  }
 
 .sidebar hr {
   border: none;
