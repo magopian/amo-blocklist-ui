@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "btoa": "^1.1.2",
-    "eventemitter2": "^0.4.14",
     "jsonschema": "^1.0.2",
     "kinto": "^1.1.0",
     "react": "^0.14.3",
