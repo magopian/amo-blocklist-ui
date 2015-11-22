@@ -3,10 +3,11 @@
   "version": "0.0.1",
   "description": "AMO blocklist UI.",
   "scripts": {
-    "build": "NODE_ENV=production node_modules/.bin/webpack --optimize-minimize --config webpack.prod.js && cp index.html style.css build/",
-    "publish": "npm run build && node_modules/.bin/gh-pages --dist build/",
-    "start": "node_modules/.bin/webpack-dev-server --config webpack.dev.js --port=3000",
-    "test": "node_modules/.bin/mocha --recursive --compilers js:babel/register --require ./test/setup-jsdom.js test/"
+    "build": "NODE_ENV=production webpack --optimize-minimize --config webpack.prod.js && cp index.html style.css build/",
+    "publish": "npm run build && gh-pages --dist build/",
+    "start": "webpack-dev-server --config webpack.dev.js --port=3000",
+    "tdd": "npm test -- -w",
+    "test": "mocha --recursive --compilers js:babel/register --require ./test/setup-jsdom.js test/"
   },
   "dependencies": {
     "btoa": "^1.1.2",

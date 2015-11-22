@@ -11,7 +11,7 @@ const INITIAL_STATE = {
   formData: null,
 };
 
-export function collection(state = INITIAL_STATE, action) {
+export default function form(state = INITIAL_STATE, action) {
   switch (action.type) {
   case FORM_RECORD_LOADED:
     return {
@@ -27,5 +27,3 @@ export function collection(state = INITIAL_STATE, action) {
     return state;
   }
 }
-
-export default collection;

@@ -1,6 +1,6 @@
 import { SETTINGS_SAVED } from "../actions/settings";
 
-const defaultSettings = {
+export const defaultSettings = {
   server: "http://localhost:8000/v1",
   username: "user",
   password: "",
