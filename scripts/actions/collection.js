@@ -18,7 +18,7 @@ const kinto = new Kinto({
 });
 
 // Sync
-function configure(name, config) {
+export function configure(name, config) {
   return {
     type: COLLECTION_READY,
     name,
@@ -56,23 +56,25 @@ function withCollection(fn) {
       // XXX error message instead?
       throw new Error("Missing collection name.");
     }
-    return fn(dispatch, kinto.collection(collName));
+    fn(dispatch, kinto.collection(collName));
   };
 }
 
 function execute(dispatch, promise, options = {}) {
   dispatch(NotificationsActions.clearNotifications());
   dispatch(busy(true));
-  return Promise.resolve(promise)
+  Promise.resolve(promise)
     .then(res => {
       if (options.message) {
         dispatch(NotificationsActions.notifyInfo(options.message));
       }
-      dispatch(busy(false));
       dispatch(load());
     })
     .catch(err => {
       dispatch(NotificationsActions.notifyError(err));
+    })
+    .then(_ => {
+      dispatch(busy(false));
     });
 }
 
@@ -80,21 +82,30 @@ export function load() {
   return withCollection((dispatch, collection) => {
     dispatch(busy(true));
     return collection.list()
-      .then(res => dispatch(loaded(res.data)))
-      .catch(err => dispatch(NotificationsActions.notifyError(err)));
+      .then(res => {
+        dispatch(loaded(res.data));
+      })
+      .catch(err => {
+        dispatch(NotificationsActions.notifyError(err));
+      })
+      .then(_ => {
+        dispatch(busy(false));
+      });
   });
 }
 
 export function loadRecord(id) {
   return withCollection((dispatch, collection) => {
     return collection.get(id)
-      .then(res => dispatch(FormActions.recordLoaded(res.data)));
+      .then(res => {
+        dispatch(FormActions.recordLoaded(res.data));
+      });
   });
 }
 
 export function create(record) {
   return withCollection((dispatch, collection) => {
-    return execute(dispatch, collection.create(record), {
+    execute(dispatch, collection.create(record), {
       message: "The record has been created.",
     });
   });
@@ -102,7 +113,7 @@ export function create(record) {
 
 export function update(record) {
   return withCollection((dispatch, collection) => {
-    return execute(dispatch, collection.update(record), {
+    execute(dispatch, collection.update(record), {
       message: `Record ${record.id} has been updated.`,
     });
   });
@@ -110,7 +121,7 @@ export function update(record) {
 
 export function deleteRecord(id) {
   return withCollection((dispatch, collection) => {
-    return execute(dispatch, collection.delete(id), {
+    execute(dispatch, collection.delete(id), {
       message: `Record ${id} has been deleted.`,
     });
   });
@@ -118,7 +129,7 @@ export function deleteRecord(id) {
 
 export function sync(options) {
   return withCollection((dispatch, collection) => {
-    return execute(dispatch, collection.sync(options), {
+    execute(dispatch, collection.sync(options), {
       message: "The collection has been synchronized.",
     });
   });
@@ -126,7 +137,7 @@ export function sync(options) {
 
 export function resetSync() {
   return withCollection((dispatch, collection) => {
-    return execute(dispatch, collection.resetSyncStatus(), {
+    execute(dispatch, collection.resetSyncStatus(), {
       message: "All local record sync statuses have been reset.",
     });
   });
