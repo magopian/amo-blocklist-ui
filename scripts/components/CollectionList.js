@@ -40,6 +40,12 @@ class Row extends Component {
     return new Date(lastModified).toJSON();
   }
 
+  onDoubleClick(event) {
+    event.preventDefault();
+    const {name, record} = this.props;
+    this.props.updatePath(`/collections/${name}/edit/${record.id}`);
+  }
+
   onDeleteClick(event) {
     if (confirm("Are you sure?")) {
       this.props.deleteRecord(this.props.record.id);
@@ -48,7 +54,8 @@ class Row extends Component {
 
   render() {
     const { name, record, config } = this.props;
-    return <tr className={record._status !== "synced" ? "unsynced" : ""}>
+    return <tr className={record._status !== "synced" ? "unsynced" : ""}
+      onDoubleClick={this.onDoubleClick.bind(this)}>
       {
         config.displayFields.map((displayField, index) => {
           return <td key={index}>{record[displayField]}</td>;
@@ -68,7 +75,7 @@ class Row extends Component {
 
 class Table extends Component {
   render() {
-    const {name, records, schema, config, deleteRecord} = this.props;
+    const {name, records, schema, config, deleteRecord, updatePath} = this.props;
     if (records.length === 0) {
       return <p>This collection is empty.</p>;
     }
@@ -95,7 +102,8 @@ class Table extends Component {
               record={record}
               schema={schema}
               config={config}
-              deleteRecord={deleteRecord} />;
+              deleteRecord={deleteRecord}
+              updatePath={updatePath} />;
           })
         }</tbody>
       </table>
@@ -144,7 +152,8 @@ export default class CollectionList extends Component {
           records={records}
           schema={schema}
           config={config}
-          deleteRecord={deleteRecord} />
+          deleteRecord={deleteRecord}
+          updatePath={this.props.updatePath} />
         <p className="actions">
           <button type="button"
             onClick={this.onSyncClick.bind(this)}>Synchronize</button>
