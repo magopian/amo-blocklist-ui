@@ -1,5 +1,7 @@
 # AMO blocklist UI
 
+[![Build Status](https://travis-ci.org/mozilla-services/amo-blocklist-ui.svg)](https://travis-ci.org/mozilla-services/amo-blocklist-ui)
+
 A Web admin UI to manage Mozilla's AMO blocklist.
 
 ## Installation
