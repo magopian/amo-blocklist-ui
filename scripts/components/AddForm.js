@@ -14,7 +14,6 @@ export default class AddForm extends Component {
 
   onSubmit(data) {
     this.props.create(data.formData);
-    this.props.history.pushState(null, `/collections/${this.props.name}`);
   }
 
   render() {

@@ -30,7 +30,7 @@ describe("collection reducer", () => {
   it("should update state when collection is loaded", () => {
     expect(collection(undefined, {
       type: actions.COLLECTION_LOADED,
-      records: [{id: 1, label: "foo"}]
-    }).records).to.have.length.of(1);
+      records: [1, 2, 3]
+    }).records).to.have.length.of(3);
   });
 });

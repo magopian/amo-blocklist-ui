@@ -12,7 +12,8 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(Object.assign({}, CollectionActions, NotificationsActions), dispatch);
+  return bindActionCreators(
+    Object.assign({}, CollectionActions, NotificationsActions), dispatch);
 }
 
 export default connect(

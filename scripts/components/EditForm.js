@@ -12,7 +12,6 @@ export default class EditForm extends Component {
   onSubmit(data) {
     this.props.formDataReceived(data.formData);
     this.props.submitForm();
-    this.props.history.pushState(null, `/collections/${this.props.name}`);
   }
 
   shouldComponentUpdate(nextProps) {

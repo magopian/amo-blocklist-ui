@@ -6,6 +6,7 @@ import collectionReducer from "../../scripts/reducers/collection";
 import collectionsReducer from "../../scripts/reducers/collections";
 import * as actions from "../../scripts/actions/collection";
 import * as NotificationsActions from "../../scripts/actions/notifications";
+import { UPDATE_PATH } from "../../scripts/redux-router";
 
 describe("collection actions", () => {
   var sandbox;
@@ -133,6 +134,21 @@ describe("collection actions", () => {
         type: NotificationsActions.NOTIFICATION_CLEAR,
       });
     });
+
+    it("should redirect to collection URL", (done) => {
+      sandbox.stub(KintoCollection.prototype, "create").returns(
+        Promise.resolve());
+
+      actions.create({foo: "bar"})(dispatch, getState);
+
+      setImmediate(() => {
+        sinon.assert.calledWithMatch(dispatch, {
+          type: UPDATE_PATH,
+          path: "/collections/addons",
+        });
+        done();
+      });
+    });
   });
 
   describe("update()", () => {
@@ -174,6 +190,21 @@ describe("collection actions", () => {
 
       sinon.assert.calledWith(dispatch, {
         type: NotificationsActions.NOTIFICATION_CLEAR,
+      });
+    });
+
+    it("should redirect to collection URL", (done) => {
+      sandbox.stub(KintoCollection.prototype, "create").returns(
+        Promise.resolve());
+
+      actions.create({foo: "bar"})(dispatch, getState);
+
+      setImmediate(() => {
+        sinon.assert.calledWithMatch(dispatch, {
+          type: UPDATE_PATH,
+          path: "/collections/addons",
+        });
+        done();
       });
     });
   });

@@ -4,6 +4,7 @@ import schemas from "../../schemas";
 
 import * as NotificationsActions from "./notifications";
 import * as FormActions from "./form";
+import { updatePath } from "../redux-router";
 
 export const COLLECTION_LOADED = "COLLECTION_LOADED";
 export const COLLECTION_BUSY = "COLLECTION_BUSY";
@@ -63,10 +64,13 @@ function withCollection(fn) {
 function execute(dispatch, promise, options = {}) {
   dispatch(NotificationsActions.clearNotifications());
   dispatch(busy(true));
-  Promise.resolve(promise)
+  return Promise.resolve(promise)
     .then(res => {
       if (options.message) {
         dispatch(NotificationsActions.notifyInfo(options.message));
+      }
+      if (options.redirect) {
+        dispatch(updatePath(options.redirect));
       }
       dispatch(load());
     })
@@ -107,6 +111,7 @@ export function create(record) {
   return withCollection((dispatch, collection) => {
     execute(dispatch, collection.create(record), {
       message: "The record has been created.",
+      redirect: `/collections/${collection._name}`,
     });
   });
 }
@@ -115,6 +120,7 @@ export function update(record) {
   return withCollection((dispatch, collection) => {
     execute(dispatch, collection.update(record), {
       message: `Record ${record.id} has been updated.`,
+      redirect: `/collections/${collection._name}`,
     });
   });
 }
