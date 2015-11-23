@@ -54,7 +54,6 @@ function syncReduxAndRouter(history, store, selectRouterState = SELECT_STATE) {
   }
 
   const unsubscribeHistory = history.listen(location => {
-    console.log(location);
     const routePath = locationToString(location);
 
     // Avoid dispatching an action if the store is already up-to-date

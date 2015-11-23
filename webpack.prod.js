@@ -1,5 +1,6 @@
 var path = require("path");
 var webpack = require("webpack");
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
   entry: {
@@ -7,13 +8,13 @@ module.exports = {
     vendors: ["react", "kinto", "jsonschema"]
   },
   output: {
-    path: path.join(__dirname, "build", "scripts"),
+    path: path.join(__dirname, "build"),
     filename: "bundle.js",
-    publicPath: "scripts/"
+    publicPath: "/"
   },
   plugins: [
     new webpack.optimize.CommonsChunkPlugin("vendors", "vendors.js"),
-    new webpack.IgnorePlugin(/fake\-indexeddb/)  // From kinto.js
+    new ExtractTextPlugin("styles.css", {allChunks: true}),
   ],
   resolve: {
     extensions: ["", ".js", ".jsx", ".css"]
@@ -30,7 +31,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        loader: "style!css",
+        loader: ExtractTextPlugin.extract("css-loader"),
         include: path.join(__dirname, "css")
       }
     ]
