@@ -10,13 +10,17 @@ export const COLLECTION_LOADED = "COLLECTION_LOADED";
 export const COLLECTION_BUSY = "COLLECTION_BUSY";
 export const COLLECTION_READY = "COLLECTION_READY";
 
-const kinto = new Kinto({
-  remote:   "http://0.0.0.0:8888/v1",
-  // XXX for custom bucket, need creation
-  // bucket: "blocklist",
-  dbPrefix: "user",
-  headers:  {Authorization: "Basic " + btoa("user:")}
-});
+export var kinto;
+
+function configureKinto(settings) {
+  const encodedCreds = btoa(settings.username + ":" + settings.password);
+  kinto = new Kinto({
+    remote:   settings.server,
+    bucket:   settings.bucket, // XXX for custom bucket, need creation
+    dbPrefix: settings.username,
+    headers:  {Authorization: "Basic " + encodedCreds}
+  });
+}
 
 // Sync
 export function configure(name, config) {
@@ -39,6 +43,8 @@ function busy(flag) {
 // Async
 export function select(name) {
   return (dispatch, getState) => {
+    // XXX could this be an action?
+    configureKinto(getState().settings);
     // XXX error message if no config
     const collections = getState().collections;
     if (!collections.hasOwnProperty(name)) {
@@ -52,6 +58,9 @@ export function select(name) {
 
 function withCollection(fn) {
   return (dispatch, getState) => {
+    if (!kinto) {
+      throw new Error("Kinto hasn't been configured.");
+    }
     const collName = getState().collection.name;
     if (!collName) {
       // XXX error message instead?

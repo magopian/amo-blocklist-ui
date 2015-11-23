@@ -1,7 +1,7 @@
 import { SETTINGS_SAVED } from "../actions/settings";
 
 export const defaultSettings = {
-  server: "http://localhost:8000/v1",
+  server: "http://localhost:8888/v1",
   username: "user",
   password: "",
   bucket: "default",

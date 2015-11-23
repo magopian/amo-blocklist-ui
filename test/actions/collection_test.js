@@ -1,15 +1,19 @@
 import { expect } from "chai";
 import sinon from "sinon";
+import btoa from "btoa";
 import KintoCollection from "kinto/lib/collection";
 import schemas from "../../schemas";
 import collectionReducer from "../../scripts/reducers/collection";
 import collectionsReducer from "../../scripts/reducers/collections";
+import settingsReducer from "../../scripts/reducers/settings";
 import * as actions from "../../scripts/actions/collection";
 import * as NotificationsActions from "../../scripts/actions/notifications";
 import { UPDATE_PATH } from "../../scripts/redux-router";
 
 describe("collection actions", () => {
   var sandbox;
+
+  const settings = settingsReducer(undefined, {type: null});
 
   beforeEach(() => {
     sandbox = sinon.sandbox.create();
@@ -30,7 +34,7 @@ describe("collection actions", () => {
     it("should select and configure a collection", () => {
       const collections = collectionsReducer();
       const dispatch = sandbox.spy();
-      const getState = () => ({collections});
+      const getState = () => ({collections, settings});
 
       actions.select("addons")(dispatch, getState);
 
@@ -45,13 +49,25 @@ describe("collection actions", () => {
     it("should dispatch an error notification on failure", () => {
       const collections = {};
       const dispatch = sandbox.spy();
-      const getState = () => ({collections});
+      const getState = () => ({collections, settings});
       const notifyError = sinon.stub(NotificationsActions, "notifyError");
 
       actions.select("foo")(dispatch, getState);
 
       sinon.assert.calledWith(notifyError,
         new Error("Collection \"foo\" is not available."));
+    });
+
+    it("should configure the kinto instance with state settings", () => {
+      const collections = collectionsReducer();
+      const dispatch = sandbox.spy();
+      const getState = () => ({collections, settings});
+
+      actions.select("addons")(dispatch, getState);
+      expect(actions.kinto._options.remote).eql(settings.server);
+      expect(actions.kinto._options.bucket).eql(settings.bucket);
+      expect(actions.kinto._options.headers.Authorization)
+        .eql("Basic " + btoa(settings.username + ":" + settings.password));
     });
   });
 
