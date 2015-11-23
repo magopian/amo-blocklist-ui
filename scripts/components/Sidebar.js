@@ -19,10 +19,15 @@ export default class Sidebar extends Component {
         <hr/>
         {
           Object.keys(collections).map((name, index) => {
-            return <li key={index}
-              className={params.name === name ? "active" : ""}>
-              <Link to={`/collections/${name}`}>{name}</Link>
-            </li>;
+            return (
+              <li key={index}
+                className={params.name === name ? "active" : ""}>
+                <Link to={`/collections/${name}`}
+                  className={collections[name].synced ? "synced" : "unsynced"}>
+                  {name}
+                </Link>
+              </li>
+            );
           })
         }
       </ul>

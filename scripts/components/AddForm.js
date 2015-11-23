@@ -3,11 +3,6 @@ import { Link } from "react-router";
 import GenericForm from "./GenericForm";
 
 export default class AddForm extends Component {
-  componentDidMount() {
-    this.props.clearNotifications();
-    this.props.select(this.props.params.name);
-  }
-
   shouldComponentUpdate(nextProps) {
     return nextProps.name && nextProps.schema;
   }
