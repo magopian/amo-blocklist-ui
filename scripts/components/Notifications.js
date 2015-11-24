@@ -1,5 +1,25 @@
 import React, { Component} from "react";
 
+class ErrorDetails extends Component {
+  static defaultProps = {
+    details: []
+  };
+
+  render() {
+    const { details } = this.props;
+    if (details.length === 0) {
+      return null;
+    }
+    return (
+      <ul>{
+        details.map((error, index) => {
+          return <li key={index}>{error}</li>;
+        })
+      }</ul>
+    );
+  }
+}
+
 class Notification extends Component {
   onCloseClick(event) {
     event.preventDefault();
@@ -12,10 +32,11 @@ class Notification extends Component {
         <a className="close" href=""
           onClick={this.onCloseClick.bind(this)}>✖</a>
         <h2>
-          {this.props.title || "Info"}{" "}
+          {this.props.type || "Info"}{" "}
           <small>[{new Date(this.props.time).toLocaleString()}]</small>
         </h2>
         <p>{this.props.message}</p>
+        <ErrorDetails details={this.props.details} />
       </div>
     );
   }

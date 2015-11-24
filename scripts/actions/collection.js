@@ -24,6 +24,22 @@ function configureKinto(settings) {
   });
 }
 
+// Helpers
+function formatSyncErrorDetails(syncResult) {
+  let details = [];
+  if (syncResult.errors.length > 0) {
+    details = details.concat(syncResult.errors.map(error => {
+      return `${error.type} error: ${error.message}`;
+    }));
+  }
+  if (syncResult.conflicts.length > 0) {
+    details = details.concat(syncResult.conflicts.map(conflict => {
+      return `${conflict.type} conflict: ${conflict.remote.id}`;
+    }));
+  }
+  return details;
+}
+
 // Sync
 export function configure(name, config) {
   return {
@@ -149,7 +165,16 @@ export function deleteRecord(id) {
 
 export function sync(options) {
   return withCollection((dispatch, collection) => {
-    execute(dispatch, collection.sync(options), {
+    const syncPromise = collection.sync(options)
+      .then(res => {
+        if (res.ok) {
+          return res;
+        }
+        const err = new Error("Synchronization failed.");
+        err.details = formatSyncErrorDetails(res);
+        throw err;
+      });
+    execute(dispatch, syncPromise, {
       message: "The collection has been synchronized.",
     });
   });

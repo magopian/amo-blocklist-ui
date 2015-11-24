@@ -11,12 +11,13 @@ import * as NotificationsActions from "../../scripts/actions/notifications";
 import { UPDATE_PATH } from "../../scripts/redux-router";
 
 describe("collection actions", () => {
-  var sandbox;
+  var sandbox, notifyError;
 
   const settings = settingsReducer(undefined, {type: null});
 
   beforeEach(() => {
     sandbox = sinon.sandbox.create();
+    notifyError = sandbox.stub(NotificationsActions, "notifyError");
   });
 
   afterEach(() => {
@@ -50,7 +51,6 @@ describe("collection actions", () => {
       const collections = {};
       const dispatch = sandbox.spy();
       const getState = () => ({collections, settings});
-      const notifyError = sinon.stub(NotificationsActions, "notifyError");
 
       actions.select("foo")(dispatch, getState);
 
@@ -290,13 +290,57 @@ describe("collection actions", () => {
       });
     });
 
-    it("should sync the record", () => {
+    it("should sync the collection", () => {
       const sync = sandbox.stub(KintoCollection.prototype, "sync")
         .returns(Promise.resolve());
 
       actions.sync()(dispatch, getState);
 
       sinon.assert.calledOnce(sync);
+    });
+
+    it("should notify from synchronization errors", (done) => {
+      sandbox.stub(KintoCollection.prototype, "sync")
+        .returns(Promise.resolve({
+          ok: false,
+          errors: [
+            {type: "incoming", message: "error1"},
+            {type: "incoming", message: "error2"},
+          ],
+          conflicts: []
+        }));
+
+      actions.sync()(dispatch, getState);
+
+      setImmediate(() => {
+        sinon.assert.calledWithMatch(NotificationsActions.notifyError, {
+          message: "Synchronization failed.",
+          details: ["incoming error: error1", "incoming error: error2"]
+        });
+        done();
+      });
+    });
+
+    it("should notify from synchronization conflicts", (done) => {
+      sandbox.stub(KintoCollection.prototype, "sync")
+        .returns(Promise.resolve({
+          ok: false,
+          conflicts: [
+            {type: "incoming", local: {id: 1}, remote: {id: 1}},
+            {type: "incoming", local: {id: 2}, remote: {id: 2}},
+          ],
+          errors: [],
+        }));
+
+      actions.sync()(dispatch, getState);
+
+      setImmediate(() => {
+        sinon.assert.calledWithMatch(NotificationsActions.notifyError, {
+          message: "Synchronization failed.",
+          details: ["incoming conflict: 1", "incoming conflict: 2"]
+        });
+        done();
+      });
     });
 
     it("should clear notifications", () => {
