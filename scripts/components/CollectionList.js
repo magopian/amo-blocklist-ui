@@ -123,7 +123,6 @@ export default class CollectionList extends Component {
   }
 
   initialize(collectionName) {
-    this.props.clearNotifications();
     this.props.select(collectionName);
     this.props.load();
   }
