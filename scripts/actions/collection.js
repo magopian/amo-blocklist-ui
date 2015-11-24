@@ -28,8 +28,15 @@ function configureKinto(settings) {
 function formatSyncErrorDetails(syncResult) {
   let details = [];
   if (syncResult.errors.length > 0) {
-    details = details.concat(syncResult.errors.map(error => {
-      return `${error.type} error: ${error.message}`;
+    details = details.concat(syncResult.errors.map(_error => {
+      var _message;
+      if (_error.type === "outgoing") {
+        const {error, message, code, errno} = _error.error;
+        _message = `errno ${errno}, ${message}: ${code} ${error}`;
+      } else {
+        _message = _error.message;
+      }
+      return `${_error.type} error: ${_message}`;
     }));
   }
   if (syncResult.conflicts.length > 0) {

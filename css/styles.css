@@ -110,6 +110,9 @@ table.record-list tbody tr {
 
 table.record-list td {
   padding: .3em .4em;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 table.record-list tbody tr:nth-child(odd) {
@@ -143,6 +146,7 @@ table.record-list td.status {
 table.record-list td.actions {
   width: 120px;
   text-align: right;
+   white-space: nowrap;
 }
 
 p.actions a {

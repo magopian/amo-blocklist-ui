@@ -37,7 +37,8 @@ class Row extends Component {
     if (!lastModified) {
       return null;
     }
-    return new Date(lastModified).toJSON();
+    const date = new Date(lastModified).toISOString();
+    return date.slice(0, 10) + " " + date.slice(11, 19);
   }
 
   onDoubleClick(event) {
