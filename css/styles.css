@@ -177,6 +177,11 @@ p.actions a {
   font-size: .8em;
 }
 
+.notification li {
+  color: #C13832;
+  font-size: .8em;
+}
+
 .notification-error {
   border: 2px solid #C13832;
 }
