@@ -2,6 +2,7 @@ import Kinto from "kinto";
 import btoa from "btoa";
 import schemas from "../../schemas";
 
+import * as CollectionsActions from "./collections";
 import * as NotificationsActions from "./notifications";
 import * as FormActions from "./form";
 import { updatePath } from "../redux-router";
@@ -9,6 +10,7 @@ import { updatePath } from "../redux-router";
 export const COLLECTION_LOADED = "COLLECTION_LOADED";
 export const COLLECTION_BUSY = "COLLECTION_BUSY";
 export const COLLECTION_READY = "COLLECTION_READY";
+export const COLLECTION_SYNCED = "COLLECTION_SYNCED";
 
 export var kinto;
 
@@ -66,7 +68,7 @@ function withCollection(fn) {
       // XXX error message instead?
       throw new Error("Missing collection name.");
     }
-    fn(dispatch, kinto.collection(collName));
+    fn(dispatch, kinto.collection(collName), collName);
   };
 }
 
@@ -92,17 +94,20 @@ function execute(dispatch, promise, options = {}) {
 }
 
 export function load() {
-  return withCollection((dispatch, collection) => {
+  return withCollection((dispatch, collection, collName) => {
     dispatch(busy(true));
     return collection.list()
       .then(res => {
         dispatch(loaded(res.data));
+        return collection.gatherLocalChanges();
       })
       .catch(err => {
         dispatch(NotificationsActions.notifyError(err));
       })
-      .then(_ => {
+      .then(({toDelete, toSync}) => {
         dispatch(busy(false));
+        dispatch(CollectionsActions.markSynced(
+          collName, toDelete.length + toSync.length === 0));
       });
   });
 }

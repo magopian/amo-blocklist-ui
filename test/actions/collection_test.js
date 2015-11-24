@@ -32,7 +32,7 @@ describe("collection actions", () => {
 
   describe("select()", () => {
     it("should select and configure a collection", () => {
-      const collections = collectionsReducer();
+      const collections = collectionsReducer(undefined, {type: null});
       const dispatch = sandbox.spy();
       const getState = () => ({collections, settings});
 
@@ -59,7 +59,7 @@ describe("collection actions", () => {
     });
 
     it("should configure the kinto instance with state settings", () => {
-      const collections = collectionsReducer();
+      const collections = collectionsReducer(undefined, {type: null});
       const dispatch = sandbox.spy();
       const getState = () => ({collections, settings});
 
@@ -75,7 +75,7 @@ describe("collection actions", () => {
     var dispatch, getState;
 
     beforeEach(() => {
-      const collections = collectionsReducer();
+      const collections = collectionsReducer(undefined, {type: null});
       const collection = collectionReducer({name: "addons"}, {type: null});
       dispatch = sandbox.spy();
       getState = () => ({
@@ -113,7 +113,7 @@ describe("collection actions", () => {
     var dispatch, getState;
 
     beforeEach(() => {
-      const collections = collectionsReducer();
+      const collections = collectionsReducer(undefined, {type: null});
       const collection = collectionReducer({name: "addons"}, {type: null});
       dispatch = sandbox.spy();
       getState = () => ({
@@ -171,7 +171,7 @@ describe("collection actions", () => {
     var dispatch, getState;
 
     beforeEach(() => {
-      const collections = collectionsReducer();
+      const collections = collectionsReducer(undefined, {type: null});
       const collection = collectionReducer({name: "addons"}, {type: null});
       dispatch = sandbox.spy();
       getState = () => ({
@@ -229,7 +229,7 @@ describe("collection actions", () => {
     var dispatch, getState;
 
     beforeEach(() => {
-      const collections = collectionsReducer();
+      const collections = collectionsReducer(undefined, {type: null});
       const collection = collectionReducer({name: "addons"}, {type: null});
       dispatch = sandbox.spy();
       getState = () => ({
@@ -272,7 +272,7 @@ describe("collection actions", () => {
     var dispatch, getState;
 
     beforeEach(() => {
-      const collections = collectionsReducer();
+      const collections = collectionsReducer(undefined, {type: null});
       const collection = collectionReducer({name: "addons"}, {type: null});
       dispatch = sandbox.spy();
       getState = () => ({
@@ -315,7 +315,7 @@ describe("collection actions", () => {
     var dispatch, getState;
 
     beforeEach(() => {
-      const collections = collectionsReducer();
+      const collections = collectionsReducer(undefined, {type: null});
       const collection = collectionReducer({name: "addons"}, {type: null});
       dispatch = sandbox.spy();
       getState = () => ({
