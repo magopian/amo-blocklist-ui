@@ -1,9 +1,6 @@
 import React from "react";
 import { Validator } from "jsonschema";
 
-import "../../css/generic-form.css";
-
-
 const REQUIRED_FIELD_SYMBOL = "*";
 
 class Field extends React.Component {
@@ -346,7 +343,7 @@ export default class GenericForm extends React.Component {
           schema={this.props.schema}
           formData={this.state.formData}
           onChange={this.onChange.bind(this)} />
-        <p><button>Submit</button></p>
+        <p><button type="submit">Submit</button></p>
       </form>
     );
   }

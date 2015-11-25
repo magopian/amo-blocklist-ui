@@ -8,8 +8,8 @@ const INITIAL_STATE = {
   name: null,
   busy: false,
   schema: {},
-  displayFields: [],
   records: [],
+  config: {displayFields: []},
 };
 
 export function collection(state = INITIAL_STATE, action) {

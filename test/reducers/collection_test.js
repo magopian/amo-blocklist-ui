@@ -15,7 +15,6 @@ describe("collection reducer", () => {
       config: "test.config",
       message: null,
       busy: false,
-      displayFields: [],
       records: [],
     });
   });

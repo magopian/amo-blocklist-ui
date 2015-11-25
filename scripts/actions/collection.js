@@ -57,7 +57,7 @@ export function configure(name, config) {
   };
 }
 
-function loaded(records) {
+export function loaded(records) {
   return {type: COLLECTION_LOADED, records};
 }
 
@@ -78,6 +78,14 @@ export function select(name) {
     }
     const config = collections[name].config;
     dispatch(configure(name, config));
+  };
+}
+
+export function selectAndLoad(name) {
+  return (dispatch, getState) => {
+    const selectAction = select(name);
+    selectAction(dispatch, getState);
+    dispatch(load());
   };
 }
 

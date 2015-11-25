@@ -53,13 +53,20 @@ class Row extends Component {
     }
   }
 
+  recordField(displayField) {
+    if (this.props.record.hasOwnProperty(displayField)) {
+      return String(this.props.record[displayField]);
+    }
+    return "<unknown>";
+  }
+
   render() {
     const { name, record, config } = this.props;
     return <tr className={record._status !== "synced" ? "unsynced" : ""}
       onDoubleClick={this.onDoubleClick.bind(this)}>
       {
         config.displayFields.map((displayField, index) => {
-          return <td key={index}>{record[displayField].toString()}</td>;
+          return <td key={index}>{this.recordField(displayField)}</td>;
         })
       }
       <td className="lastmod">{this.lastModified}</td>
@@ -113,21 +120,6 @@ class Table extends Component {
 }
 
 export default class CollectionList extends Component {
-  componentDidMount() {
-    this.initialize(this.props.params.name);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.params.name !== nextProps.params.name) {
-      this.initialize(nextProps.params.name);
-    }
-  }
-
-  initialize(collectionName) {
-    this.props.select(collectionName);
-    this.props.load();
-  }
-
   onSyncClick() {
     this.props.sync();
   }
@@ -156,6 +148,7 @@ export default class CollectionList extends Component {
           updatePath={this.props.updatePath} />
         <p className="actions">
           <button type="button"
+            className="btn-sync"
             onClick={this.onSyncClick.bind(this)}>Synchronize</button>
           <LinkButton label="Add" to={`/collections/${name}/add`} />
           <AdvancedActions resetSync={this.onResetSyncClick.bind(this)} />
