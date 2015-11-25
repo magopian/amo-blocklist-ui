@@ -4,7 +4,7 @@ import collection from "./collection";
 import collections from "./collections";
 import notifications from "./notifications";
 import form from "./form";
-const { routeReducer } = require("../redux-router");
+import { routeReducer } from "redux-simple-router";
 
 const rootReducer = combineReducers({
   settings,

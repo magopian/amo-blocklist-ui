@@ -5,7 +5,7 @@ import schemas from "../../schemas";
 import * as CollectionsActions from "./collections";
 import * as NotificationsActions from "./notifications";
 import * as FormActions from "./form";
-import { updatePath } from "../redux-router";
+import { updatePath } from "redux-simple-router";
 
 export const COLLECTION_LOADED = "COLLECTION_LOADED";
 export const COLLECTION_BUSY = "COLLECTION_BUSY";

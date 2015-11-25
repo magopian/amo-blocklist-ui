@@ -6,7 +6,7 @@ import { Router } from "react-router";
 import routes from "./routes";
 import configureStore from "./store/configureStore";
 const createHashHistory = require("history/lib/createHashHistory");
-const { syncReduxAndRouter } = require("./redux-router");
+import { syncReduxAndRouter } from "redux-simple-router";
 
 import "../css/styles.css";
 

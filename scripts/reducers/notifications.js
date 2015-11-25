@@ -1,4 +1,4 @@
-import { UPDATE_PATH } from "../redux-router";
+import { UPDATE_PATH } from "redux-simple-router";
 import {
   NOTIFICATION_ADDED,
   NOTIFICATION_REMOVED,
