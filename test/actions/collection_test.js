@@ -8,7 +8,7 @@ import collectionsReducer from "../../scripts/reducers/collections";
 import settingsReducer from "../../scripts/reducers/settings";
 import * as actions from "../../scripts/actions/collection";
 import * as NotificationsActions from "../../scripts/actions/notifications";
-import { UPDATE_PATH } from "../../scripts/redux-router";
+import { UPDATE_PATH } from "redux-simple-router";
 
 describe("collection actions", () => {
   var sandbox, notifyError;

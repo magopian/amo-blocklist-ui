@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { UPDATE_PATH } from "../../scripts/redux-router";
+import { UPDATE_PATH } from "redux-simple-router";
 import notifications from "../../scripts/reducers/notifications";
 import * as actions from "../../scripts/actions/notifications";
 
