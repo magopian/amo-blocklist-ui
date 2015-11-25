@@ -19,7 +19,7 @@ function configureKinto(settings) {
   kinto = new Kinto({
     remote:   settings.server,
     bucket:   settings.bucket, // XXX for custom bucket, need creation
-    dbPrefix: settings.username,
+    dbPrefix: settings.username,  // XXX prefix can be empty (same data for everyone)
     headers:  {Authorization: "Basic " + encodedCreds}
   });
 }
