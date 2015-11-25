@@ -5,10 +5,17 @@ export default {
   "additionalProperties": false,
   "required": ["issuerName", "serialNumber"],
   "default": {
+    "enabled": false,
     "issuerName": "",
     "serialNumber": ""
   },
   "properties": {
+    "enabled": {
+      "type": "boolean",
+      "title": "Enabled",
+      "description": "Blocking rule is enabled.",
+      "default": false
+    },
     "issuerName": {
       "type": "string",
       "title": "Issuer name",

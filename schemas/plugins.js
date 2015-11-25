@@ -6,7 +6,21 @@ export default {
   "type": "object",
   "additionalProperties": false,
   "required": ["versionRange"],
+  "default": {
+    "enabled": false,
+    "matchName": "",
+    "matchFilename": "",
+    "matchDescription": "",
+    "infoURL": "",
+    "versionRange": []
+  },
   "properties": {
+    "enabled": {
+      "type": "boolean",
+      "title": "Enabled",
+      "description": "Blocking rule is enabled.",
+      "default": false
+    },
     "matchName": {
       "type": "string",
       "title": "Name match",
