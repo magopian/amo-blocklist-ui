@@ -59,7 +59,7 @@ class CheckboxField extends React.Component {
         type={this.props.schema.type}>
         <input type="checkbox"
           title={this.props.placeholder}
-          value={this.props.formData || this.props.schema.default}
+          checked={this.props.formData || this.props.schema.default}
           required={this.props.required}
           onChange={this.onChange.bind(this)} />
       </Field>
