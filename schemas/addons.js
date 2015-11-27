@@ -7,18 +7,11 @@ export default {
   "additionalProperties": false,
   "required": ["addonId"],
   "default": {
-    "enabled": false,
     "addonId": "",
     "prefs": [],
     "versionRange": []
   },
   "properties": {
-    "enabled": {
-      "type": "boolean",
-      "title": "Enabled",
-      "description": "Blocking rule is enabled.",
-      "default": false
-    },
     "addonId": {
       "type": "string",
       "title": "Addon id",

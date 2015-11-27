@@ -7,7 +7,6 @@ export default {
   "additionalProperties": false,
   "required": ["versionRange"],
   "default": {
-    "enabled": false,
     "matchName": "",
     "matchFilename": "",
     "matchDescription": "",
@@ -15,12 +14,6 @@ export default {
     "versionRange": []
   },
   "properties": {
-    "enabled": {
-      "type": "boolean",
-      "title": "Enabled",
-      "description": "Blocking rule is enabled.",
-      "default": false
-    },
     "matchName": {
       "type": "string",
       "title": "Name match",

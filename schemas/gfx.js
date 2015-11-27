@@ -5,7 +5,6 @@ export default {
   "additionalProperties": false,
   "required": ["os", "vendor", "feature", "featureStatus"],
   "default": {
-    "enabled": false,
     "os": "",
     "vendor": "",
     "devices": [],
@@ -15,12 +14,6 @@ export default {
     "driverVersionComparator": ""
   },
   "properties": {
-    "enabled": {
-      "type": "boolean",
-      "title": "Enabled",
-      "description": "Blocking rule is enabled.",
-      "default": false
-    },
     "os": {
       "type": "string",
       "title": "OS",
