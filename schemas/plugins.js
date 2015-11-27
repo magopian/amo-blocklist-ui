@@ -6,6 +6,13 @@ export default {
   "type": "object",
   "additionalProperties": false,
   "required": ["versionRange"],
+  "default": {
+    "matchName": "",
+    "matchFilename": "",
+    "matchDescription": "",
+    "infoURL": "",
+    "versionRange": []
+  },
   "properties": {
     "matchName": {
       "type": "string",

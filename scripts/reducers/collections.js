@@ -9,28 +9,28 @@ const INITIAL_STATE = {
     name: "addons",
     synced: true,
     config: {
-      displayFields: ["addonId"],
+      displayFields: ["enabled", "addonId"],
     },
   },
   certificates: {
     name: "certificates",
     synced: true,
     config: {
-      displayFields: ["issuerName"],
+      displayFields: ["enabled", "issuerName"],
     },
   },
   gfx: {
     name: "gfx",
     synced: true,
     config: {
-      displayFields: ["os", "vendor", "feature"],
+      displayFields: ["enabled", "os", "vendor", "feature"],
     },
   },
   plugins: {
     name: "plugins",
     synced: true,
     config: {
-      displayFields: ["matchName", "matchFilename", "matchDescription"],
+      displayFields: ["enabled", "matchName", "matchFilename", "matchDescription"],
     },
   },
 };

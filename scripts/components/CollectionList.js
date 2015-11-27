@@ -59,7 +59,7 @@ class Row extends Component {
       onDoubleClick={this.onDoubleClick.bind(this)}>
       {
         config.displayFields.map((displayField, index) => {
-          return <td key={index}>{record[displayField]}</td>;
+          return <td key={index}>{record[displayField].toString()}</td>;
         })
       }
       <td className="lastmod">{this.lastModified}</td>

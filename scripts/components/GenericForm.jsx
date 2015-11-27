@@ -48,6 +48,25 @@ class TextField extends React.Component {
   }
 }
 
+class CheckboxField extends React.Component {
+  onChange(event) {
+    this.props.onChange(event.target.checked);
+  }
+
+  render() {
+    return (
+      <Field label={this.props.label} required={this.props.required}
+        type={this.props.schema.type}>
+        <input type="checkbox"
+          title={this.props.placeholder}
+          checked={this.props.formData || this.props.schema.default}
+          required={this.props.required}
+          onChange={this.onChange.bind(this)} />
+      </Field>
+    );
+  }
+}
+
 class SelectField extends React.Component {
   onChange(event) {
     this.props.onChange(event.target.value);
@@ -81,6 +100,7 @@ class SchemaField extends React.Component {
     return {
       string: StringField,
       array:  ArrayField,
+      boolean: BooleanField,
       object: ObjectField,
     };
   }
@@ -110,6 +130,20 @@ class StringField extends React.Component {
   }
 }
 
+class BooleanField extends React.Component {
+  render() {
+    const schema = this.props.schema;
+    const commonProps = {
+      schema,
+      label:    schema.title,
+      formData: this.props.formData,
+      required: this.props.required,
+      onChange: this.props.onChange.bind(this),
+    };
+    return <CheckboxField placeholder={schema.description} {...commonProps} />;
+  }
+}
+
 class ArrayField extends React.Component {
   constructor(props) {
     super(props);
@@ -128,6 +162,7 @@ class ArrayField extends React.Component {
     switch (itemsSchema.type) {
     case "string": return "";
     case "array":  return [];
+    case "boolean": return false;
     case "object": return {};
     default: return undefined;
     }
