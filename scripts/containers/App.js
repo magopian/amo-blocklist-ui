@@ -1,19 +1,5 @@
-import React, { Component } from "react";
-
-export default class App extends Component {
-  render() {
-    const {sidebar, notifications, content} = this.props;
-    return (
-      <div className="main">
-        <div className="sidebar">
-          {sidebar || <p>Sidebar.</p>}
-        </div>
-        <div className="content">
-          {notifications || null}
-          {content || <p>Default.</p>}
-        </div>
-      </div>
-    );
-  }
+if (process.env.NODE_ENV === "production") {
+  module.exports = require("./App.production");
+} else {
+  module.exports = require("./App.development");
 }
-
