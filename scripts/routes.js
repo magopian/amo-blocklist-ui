@@ -9,33 +9,22 @@ import AddFormPage from "./containers/AddFormPage";
 import EditFormPage from "./containers/EditFormPage";
 import SettingsPage from "./containers/SettingsPage";
 
+const common = {
+  notifications: Notifications,
+  sidebar: Sidebar,
+};
+
 export default (
   <Route path="/" component={App}>
-    <IndexRoute components={{
-      notifications: Notifications,
-      content: HomePage,
-      sidebar: Sidebar,
-    }} />
-    <Route path="/collections/:name" components={{
-      notifications: Notifications,
-      content: CollectionListPage,
-      sidebar: Sidebar,
-    }} />
-    <Route path="/collections/:name/add" components={{
-      notifications: Notifications,
-      content: AddFormPage,
-      sidebar: Sidebar,
-    }} />
-    <Route path="/collections/:name/edit/:id" components={{
-      notifications: Notifications,
-      content: EditFormPage,
-      sidebar: Sidebar,
-    }} />
-    <Route path="/settings" components={{
-      notifications: Notifications,
-      content: SettingsPage,
-      sidebar: Sidebar,
-    }} />
+    <IndexRoute components={{...common, content: HomePage}} />
+    <Route path="/collections/:name"
+      components={{...common, content: CollectionListPage}} />
+    <Route path="/collections/:name/add"
+      components={{...common, content: AddFormPage}} />
+    <Route path="/collections/:name/edit/:id"
+      components={{...common, content: EditFormPage}} />
+    <Route path="/settings"
+      components={{...common, content: SettingsPage}} />
     <Route path="*" components={{
       sidebar: Sidebar,
       content: _ => <h1>Page not found.</h1>
