@@ -109,6 +109,31 @@ describe("collection actions", () => {
     });
   });
 
+  describe("selectAndLoad()", () => {
+    var dispatch, getState;
+
+    beforeEach(() => {
+      const collections = collectionsReducer(undefined, {type: null});
+      const collection = collectionReducer({name: "addons"}, {type: null});
+      dispatch = sandbox.spy();
+      getState = () => ({
+        collections,
+        collection,
+        settings,
+      });
+    });
+
+    it("should select and load a named collection", () => {
+      actions.selectAndLoad("certificates")(dispatch, getState);
+
+      sinon.assert.calledWithMatch(dispatch, {
+        type: actions.COLLECTION_READY,
+        name: "certificates",
+      });
+      sinon.assert.calledWithMatch(dispatch, actions.load);
+    });
+  });
+
   describe("create()", () => {
     var dispatch, getState;
 

@@ -20,7 +20,7 @@ class ErrorDetails extends Component {
   }
 }
 
-class Notification extends Component {
+export class Notification extends Component {
   onCloseClick(event) {
     event.preventDefault();
     this.props.close();
@@ -46,7 +46,9 @@ export default class Notifications extends Component {
   render() {
     const {notifications, removeNotification} = this.props;
     if (!notifications.length) {
-      return null;
+      // This is required to avoid jsdom to explode when a component DOM
+      // fragment is rerendered empty by React.
+      return <div/>;
     }
     return (
       <div className="notifications">{
