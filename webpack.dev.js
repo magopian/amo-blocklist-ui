@@ -4,18 +4,17 @@ var webpack = require("webpack");
 module.exports = {
   devtool: "eval",
   entry: [
-    "webpack-dev-server/client?http://localhost:3000",
-    "webpack/hot/only-dev-server",
+    "webpack-hot-middleware/client",
     "./scripts/index"
   ],
   output: {
-    path: path.join(__dirname, "scripts"),
+    path: path.join(__dirname, "build"),
     filename: "bundle.js",
     publicPath: "/"
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    new webpack.NoErrorsPlugin(),
   ],
   resolve: {
     extensions: ["", ".js", ".jsx", ".css"]
@@ -23,8 +22,14 @@ module.exports = {
   module: {
     loaders: [
       {
+        test: /\.json$/,
+        loader: "json",
+        exclude: /node_modules/,
+      },
+      {
         test: /\.jsx?$/,
-        loaders: ["react-hot", "babel"],
+        loaders: ["babel"],
+        exclude: /node_modules/,
         include: [
           path.join(__dirname, "schema"),
           path.join(__dirname, "scripts")
@@ -33,7 +38,8 @@ module.exports = {
       {
         test: /\.css$/,
         loader: "style!css",
-        include: path.join(__dirname, "css")
+        exclude: /node_modules/,
+        include: path.join(__dirname, "css"),
       }
     ]
   }
