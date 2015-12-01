@@ -100,7 +100,9 @@ export function selectAndLoad(name) {
 function withCollection(fn) {
   return (dispatch, getState) => {
     if (!kinto) {
-      throw new Error("The Kinto instance is not created.");
+      const error = new Error("Kinto is not properly configured. " +
+                              "Please check the settings.");
+      return dispatch(NotificationsActions.notifyError(error));
     }
     const collName = getState().collection.name;
     if (!collName) {
