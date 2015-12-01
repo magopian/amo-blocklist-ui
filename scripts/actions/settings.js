@@ -1,21 +1,18 @@
 import * as NotificationsActions from "./notifications";
+import * as CollectionActions from "./collection";
 
-export const SETTINGS_LOADED = "SETTINGS_LOADED";
-export const SETTINGS_SAVED = "SETTINGS_SAVE";
+export const SETTINGS_SAVED = "SETTINGS_SAVED";
 
-export function loadSettings() {
-  return dispatch => {
-    const jsonSettings = localStorage.getItem("kwac_settings");
-    const settings = jsonSettings ? JSON.parse(jsonSettings) : {};
-    dispatch({type: SETTINGS_LOADED, settings});
-  };
-}
 
 export function saveSettings(settings) {
   return dispatch => {
-    const jsonSettings = JSON.stringify(settings);
-    localStorage.setItem("kwac_settings", jsonSettings);
-    dispatch(NotificationsActions.notifyInfo("Settings saved."));
-    dispatch({type: SETTINGS_SAVED, settings});
+    try {
+      CollectionActions.configureKinto(settings);
+      dispatch({type: SETTINGS_SAVED, settings});
+      localStorage.setItem("kwac_settings", JSON.stringify(settings));
+      dispatch(NotificationsActions.notifyInfo("Settings saved."));
+    } catch (err) {
+      dispatch(NotificationsActions.notifyError(err));
+    }
   };
 }

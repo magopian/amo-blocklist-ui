@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import LinkButton from "./LinkButton";
+import BusyIndicator from "./BusyIndicator";
 
 class AdvancedActions extends React.Component {
   constructor(props) {
@@ -131,14 +132,18 @@ export default class CollectionList extends Component {
   }
 
   render() {
-    const {name, schema, records, config} = this.props.collection;
+    const {name, busy, schema, records, config} = this.props.collection;
+    const {server} = this.props.settings;
     const {deleteRecord} = this.props;
     if (!name) {
       return <p>Loading...</p>;
     }
     return (
-      <div>
-        <h1>{name}</h1>
+      <div className="collection-page">
+        <h1>
+          {name}
+          <em>{busy ? <BusyIndicator/> : null}{server}</em>
+        </h1>
         <Table
           name={name}
           records={records}

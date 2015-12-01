@@ -47,15 +47,44 @@ describe("collection actions", () => {
       });
     });
 
-    it("should dispatch an error notification on failure", () => {
+    it("should dispatch an error on bad kinto configuration", () => {
+      const collections = collectionsReducer(undefined, {type: null});
+      const settings = {server: "http://bad.server/v999"};
+      const dispatch = sandbox.spy();
+      const getState = () => ({collections, settings});
+
+      actions.select("addons")(dispatch, getState);
+
+      sinon.assert.calledWithMatch(notifyError,
+        {message: "Cannot configure Kinto: Unsupported protocol version: v999" +
+                  "; please check your settings."});
+    });
+
+    it("should dispatch an error on collection unavailable", () => {
       const collections = {};
       const dispatch = sandbox.spy();
       const getState = () => ({collections, settings});
 
       actions.select("foo")(dispatch, getState);
 
-      sinon.assert.calledWith(notifyError,
-        new Error("Collection \"foo\" is not available."));
+      sinon.assert.calledWithMatch(notifyError,
+        {message: "Collection \"foo\" is not available."});
+    });
+
+    it("should dispatch an error on unconfigured collection", () => {
+      const collections = {
+        unconfigured: {
+          name: "unconfigured",
+          synced: false,
+        }
+      };
+      const dispatch = sandbox.spy();
+      const getState = () => ({collections, settings});
+
+      actions.select("unconfigured")(dispatch, getState);
+
+      sinon.assert.calledWithMatch(notifyError,
+        {message: `The "unconfigured" collection is not configured.`});
     });
 
     it("should configure the kinto instance with state settings", () => {

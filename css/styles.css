@@ -89,6 +89,14 @@ body {
   border-bottom: 1px dashed #444;
 }
 
+.collection-page h1 em {
+  font-size: .6em;
+  line-height: 2.5em;
+  font-weight: normal;
+  display: block;
+  float: right;
+}
+
 table.record-list {
   width: 100%;
   border-collapse: collapse;
