@@ -56,7 +56,12 @@ describe("CollectionListPage container", () => {
     });
 
     it("should render collection title", () => {
-      expect(nodeText(comp, "h1")).eql("addons");
+      expect(nodeText(comp, "h1 > span")).eql("addons");
+    });
+
+    it("should render current configured server URL", () => {
+      const { server } = comp.store.getState().settings;
+      expect(nodeText(comp, "h1 > em")).eql(server);
     });
 
     it("should render expected column headings", () => {

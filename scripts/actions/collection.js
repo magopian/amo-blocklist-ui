@@ -14,7 +14,7 @@ export const COLLECTION_SYNCED = "COLLECTION_SYNCED";
 
 export var kinto;
 
-function configureKinto(settings) {
+export function configureKinto(settings) {
   const encodedCreds = btoa(settings.username + ":" + settings.password);
   kinto = new Kinto({
     remote:   settings.server,
@@ -68,15 +68,23 @@ function busy(flag) {
 // Async
 export function select(name) {
   return (dispatch, getState) => {
-    // XXX could this be an action?
-    configureKinto(getState().settings);
-    // XXX error message if no config
+    try {
+      configureKinto(getState().settings);
+    } catch(err) {
+      const error = new Error(
+        `Cannot configure Kinto: ${err.message}; please check your settings.`);
+      return dispatch(NotificationsActions.notifyError(error));
+    }
     const collections = getState().collections;
     if (!collections.hasOwnProperty(name)) {
       const error = new Error(`Collection "${name}" is not available.`);
       return dispatch(NotificationsActions.notifyError(error));
     }
     const config = collections[name].config;
+    if (!config) {
+      const error = new Error(`The "${name}" collection is not configured.`);
+      return dispatch(NotificationsActions.notifyError(error));
+    }
     dispatch(configure(name, config));
   };
 }
@@ -92,11 +100,10 @@ export function selectAndLoad(name) {
 function withCollection(fn) {
   return (dispatch, getState) => {
     if (!kinto) {
-      throw new Error("Kinto hasn't been configured.");
+      throw new Error("The Kinto instance is not created.");
     }
     const collName = getState().collection.name;
     if (!collName) {
-      // XXX error message instead?
       throw new Error("Missing collection name.");
     }
     fn(dispatch, kinto.collection(collName), collName);

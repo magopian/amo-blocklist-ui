@@ -9,6 +9,7 @@ function mapStateToProps(state) {
   return {
     collection: state.collection,
     collections: state.collections,
+    settings: state.settings,
   };
 }
 
