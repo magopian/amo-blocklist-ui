@@ -21,6 +21,9 @@ describe("SettingsPage container", () => {
     sandbox = sinon.sandbox.create();
     const props = {params: {name: ""}};
     comp = setupContainer(<SettingsPage {...props} />);
+    sandbox.stub(global, "fetch").returns(Promise.resolve({
+      json() {return {a: 1};}
+    }));
   });
 
   afterEach(() => {
@@ -63,5 +66,24 @@ describe("SettingsPage container", () => {
       password: "newPassword",
       bucket: "otherBucket",
     }));
+  });
+
+  it("should not render server information initially", () => {
+    expect(nodeExists(comp, ".server-info")).eql(false);
+  });
+
+  it("should render server information once form is saved", () => {
+    Simulate.submit(findOne(comp, "form"));
+
+    expect(nodeExists(comp, ".server-info")).eql(true);
+  });
+
+  it("should render expected server information", (done) => {
+    Simulate.submit(findOne(comp, "form"));
+
+    setImmediate(() => {
+      expect(JSON.parse(nodeText(comp, ".server-info pre"))).eql({a: 1});
+      done();
+    });
   });
 });
