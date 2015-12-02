@@ -21,12 +21,15 @@ describe("settings actions", () => {
   });
 
   describe("saveSettings", () => {
-    describe("Valid settings", () => {
-      var dispatch;
+    var dispatch, getState;
 
+    beforeEach(() => {
+      dispatch = sandbox.spy();
+      getState = () => ({settings});
+    });
+
+    describe("Valid settings", () => {
       beforeEach(() => {
-        dispatch = sandbox.spy();
-        const getState = () => ({settings});
         const actionCreator = actions.saveSettings({
           server: "http://ok.server/v1"
         });
@@ -51,11 +54,7 @@ describe("settings actions", () => {
     });
 
     describe("Invalid settings", () => {
-      var dispatch;
-
       beforeEach(() => {
-        dispatch = sandbox.spy();
-        const getState = () => ({settings});
         const actionCreator = actions.saveSettings({
           server: "http://bad.server/v999"
         });

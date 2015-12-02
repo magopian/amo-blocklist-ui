@@ -19,9 +19,14 @@ describe("serverInfo actions", () => {
   });
 
   describe("loadServerInfo", () => {
+    var dispatch, getState;
+
+    beforeEach(() => {
+      dispatch = sandbox.spy();
+      getState = () => ({serverInfo});
+    });
+
     it("should fix server url if no trailing slash is provided", () => {
-      const dispatch = sandbox.spy();
-      const getState = () => ({serverInfo});
       const fetch = sandbox.stub(global, "fetch")
         .returns(Promise.resolve({
           json() {return {};}
@@ -33,8 +38,6 @@ describe("serverInfo actions", () => {
     });
 
     it("should reset server info data", () => {
-      const dispatch = sandbox.spy();
-      const getState = () => ({serverInfo});
       sandbox.stub(global, "fetch").returns(Promise.resolve({
         json() {return {a: 1};}
       }));
@@ -47,8 +50,6 @@ describe("serverInfo actions", () => {
     });
 
     it("should dispatch SERVERINFO_LOADED when data is retrieved", (done) => {
-      const dispatch = sandbox.spy();
-      const getState = () => ({serverInfo});
       sandbox.stub(global, "fetch").returns(Promise.resolve({
         json() {return {a: 1};}
       }));
@@ -65,8 +66,6 @@ describe("serverInfo actions", () => {
     });
 
     it("should notify if fetching server information fails", (done) => {
-      const dispatch = sandbox.spy();
-      const getState = () => ({serverInfo});
       sandbox.stub(global, "fetch").returns(Promise.reject(new Error("err")));
 
       actions.loadServerInfo("http://foo/v1")(dispatch, getState);
