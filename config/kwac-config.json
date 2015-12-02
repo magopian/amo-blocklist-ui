@@ -1,0 +1,30 @@
+{
+  "addons": {
+    "name": "addons",
+    "synced": true,
+    "config": {
+      "displayFields": ["enabled", "addonId"]
+    }
+  },
+  "certificates": {
+    "name": "certificates",
+    "synced": true,
+    "config": {
+      "displayFields": ["enabled", "issuerName"]
+    }
+  },
+  "gfx": {
+    "name": "gfx",
+    "synced": true,
+    "config": {
+      "displayFields": ["enabled", "os", "vendor", "feature"]
+    }
+  },
+  "plugins": {
+    "name": "plugins",
+    "synced": true,
+    "config": {
+      "displayFields": ["enabled", "matchName", "matchFilename", "matchDescription"]
+    }
+  }
+}
