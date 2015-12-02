@@ -1,10 +1,12 @@
 import { combineReducers } from "redux";
+import { routeReducer } from "redux-simple-router";
+
 import settings from "./settings";
 import collection from "./collection";
 import collections from "./collections";
 import notifications from "./notifications";
 import form from "./form";
-import { routeReducer } from "redux-simple-router";
+import serverInfo from "./serverInfo";
 
 const rootReducer = combineReducers({
   settings,
@@ -12,6 +14,7 @@ const rootReducer = combineReducers({
   collections,
   notifications,
   form,
+  serverInfo,
   routing: routeReducer,
 });
 
