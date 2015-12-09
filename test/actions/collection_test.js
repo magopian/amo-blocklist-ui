@@ -2,7 +2,7 @@ import { expect } from "chai";
 import sinon from "sinon";
 import btoa from "btoa";
 import KintoCollection from "kinto/lib/collection";
-import schemas from "../../schemas";
+import kwacConfig from "../../config/kwac-config.json";
 import collectionReducer from "../../scripts/reducers/collection";
 import collectionsReducer from "../../scripts/reducers/collections";
 import settingsReducer from "../../scripts/reducers/settings";
@@ -27,7 +27,7 @@ describe("collection actions", () => {
   describe("configure()", () => {
     it("should retrieve the collection schema", () => {
       expect(actions.configure("addons", {}).schema)
-        .eql(schemas.addons);
+        .eql(kwacConfig.addons.config.schema);
     });
   });
 
@@ -42,7 +42,7 @@ describe("collection actions", () => {
       sinon.assert.calledWith(dispatch, {
         type: actions.COLLECTION_READY,
         name: "addons",
-        schema: schemas.addons,
+        schema: kwacConfig.addons.config.schema,
         config: collections.addons.config,
       });
     });

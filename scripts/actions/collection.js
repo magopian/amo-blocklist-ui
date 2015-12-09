@@ -1,6 +1,5 @@
 import Kinto from "kinto";
 import btoa from "btoa";
-import schemas from "../../schemas";
 
 import * as CollectionsActions from "./collections";
 import * as NotificationsActions from "./notifications";
@@ -53,7 +52,7 @@ export function configure(name, config) {
     type: COLLECTION_READY,
     name,
     config,
-    schema: schemas[name],
+    schema: config.schema
   };
 }
 
