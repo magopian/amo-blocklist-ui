@@ -18,6 +18,12 @@
           "versionRange": []
         },
         "properties": {
+          "enabled": {
+            "type": "boolean",
+            "title": "enabled",
+            "description": "blocking rule is enabled.",
+            "default": false
+          },
           "addonId": {
             "type": "string",
             "title": "Addon id",
@@ -154,6 +160,12 @@
           "serialNumber": ""
         },
         "properties": {
+          "enabled": {
+            "type": "boolean",
+            "title": "enabled",
+            "description": "blocking rule is enabled.",
+            "default": false
+          },
           "issuerName": {
             "type": "string",
             "title": "Issuer name",
@@ -194,6 +206,12 @@
           "driverVersionComparator": ""
         },
         "properties": {
+          "enabled": {
+            "type": "boolean",
+            "title": "enabled",
+            "description": "blocking rule is enabled.",
+            "default": false
+          },
           "os": {
             "type": "string",
             "title": "OS",
@@ -273,6 +291,12 @@
           "versionRange": []
         },
         "properties": {
+          "enabled": {
+            "type": "boolean",
+            "title": "enabled",
+            "description": "blocking rule is enabled.",
+            "default": false
+          },
           "matchName": {
             "type": "string",
             "title": "Name match",
