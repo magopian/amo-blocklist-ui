@@ -20,7 +20,7 @@
         "properties": {
           "enabled": {
             "type": "boolean",
-            "title": "enabled",
+            "title": "Enabled",
             "description": "blocking rule is enabled.",
             "default": false
           },
@@ -162,7 +162,7 @@
         "properties": {
           "enabled": {
             "type": "boolean",
-            "title": "enabled",
+            "title": "Enabled",
             "description": "blocking rule is enabled.",
             "default": false
           },
@@ -208,7 +208,7 @@
         "properties": {
           "enabled": {
             "type": "boolean",
-            "title": "enabled",
+            "title": "Enabled",
             "description": "blocking rule is enabled.",
             "default": false
           },
@@ -293,7 +293,7 @@
         "properties": {
           "enabled": {
             "type": "boolean",
-            "title": "enabled",
+            "title": "Enabled",
             "description": "blocking rule is enabled.",
             "default": false
           },

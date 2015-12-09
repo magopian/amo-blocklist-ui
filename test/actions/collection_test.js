@@ -26,7 +26,7 @@ describe("collection actions", () => {
 
   describe("configure()", () => {
     it("should retrieve the collection schema", () => {
-      expect(actions.configure("addons", {}).schema)
+      expect(actions.configure("addons", kwacConfig.addons.config).schema)
         .eql(kwacConfig.addons.config.schema);
     });
   });
