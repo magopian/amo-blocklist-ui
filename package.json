@@ -9,10 +9,9 @@
     "test": "echo \"Tested in kinto-admin.\""
   },
   "dependencies": {
+    "kinto-admin": "^0.4.0"
   },
-  "devDependencies": {
-    "kinto-admin": "git://github.com/Kinto/kinto-admin.git#custom-json-config-server"
-  },
+  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mozilla-services/amo-blocklist-ui.git"
