@@ -10,10 +10,11 @@
         "type": "object",
         "additionalProperties": false,
         "required": [
-          "addonId"
+          "blockID",
+          "guid"
         ],
         "default": {
-          "addonId": "",
+          "guid": "",
           "prefs": [],
           "versionRange": []
         },
@@ -24,10 +25,17 @@
             "description": "blocking rule is enabled.",
             "default": false
           },
-          "addonId": {
+          "guid": {
             "type": "string",
             "title": "Addon id",
             "description": "The addon unique identifier.",
+            "minLength": 1,
+            "default": ""
+          },
+          "blockID": {
+            "type": "string",
+            "title": "blockID",
+            "description": "Id of the item details.",
             "minLength": 1,
             "default": ""
           },
@@ -64,7 +72,6 @@
                 "minVersion": "",
                 "maxVersion": "",
                 "severity": "0",
-                "vulnerabilityStatus": "",
                 "targetApplication": {
                   "id": "",
                   "minVersion": "",
@@ -95,42 +102,40 @@
                   ],
                   "default": "0"
                 },
-                "vulnerabilityStatus": {
-                  "type": "string",
-                  "title": "Vulnerability status",
-                  "description": "The vulnerability status code number.",
-                  "enum": [
-                    "",
-                    "1",
-                    "2"
-                  ],
-                  "default": ""
-                },
                 "targetApplication": {
-                  "type": "object",
+                  "type": "array",
                   "title": "Target application",
                   "description": "The target application information.",
-                  "additionalProperties": false,
-                  "required": [
-                    "id",
-                    "minVersion",
-                    "maxVersion"
-                  ],
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "title": "Application id",
-                      "description": "The application unique identifier."
+                  "default": [],
+                  "items": {
+                    "type": "object",
+                    "title": "Target application",
+                    "description": "The target application information.",
+                    "additionalProperties": false,
+                    "required": [
+                      "id"
+                    ],
+                    "default": {
+                      "id": "",
+                      "minVersion": "",
+                      "maxVersion": ""
                     },
-                    "minVersion": {
-                      "type": "string",
-                      "title": "Min version",
-                      "description": "The mininum version."
-                    },
-                    "maxVersion": {
-                      "type": "string",
-                      "title": "Max version",
-                      "description": "The maximum version."
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "title": "Application id",
+                        "description": "The application unique identifier."
+                      },
+                      "minVersion": {
+                        "type": "string",
+                        "title": "Min version",
+                        "description": "The mininum version."
+                      },
+                      "maxVersion": {
+                        "type": "string",
+                        "title": "Max version",
+                        "description": "The maximum version."
+                      }
                     }
                   }
                 }
@@ -191,6 +196,7 @@
         "type": "object",
         "additionalProperties": false,
         "required": [
+          "blockID",
           "os",
           "vendor",
           "feature",
@@ -211,6 +217,13 @@
             "title": "Enabled",
             "description": "blocking rule is enabled.",
             "default": false
+          },
+          "blockID": {
+            "type": "string",
+            "title": "blockID",
+            "description": "Id of the item details.",
+            "minLength": 1,
+            "default": ""
           },
           "os": {
             "type": "string",
@@ -281,9 +294,12 @@
         "type": "object",
         "additionalProperties": false,
         "required": [
+          "blockID",
           "versionRange"
         ],
         "default": {
+          "blockID": "",
+          "os": "",
           "matchName": "",
           "matchFilename": "",
           "matchDescription": "",
@@ -296,6 +312,18 @@
             "title": "Enabled",
             "description": "blocking rule is enabled.",
             "default": false
+          },
+          "blockID": {
+            "type": "string",
+            "title": "blockID",
+            "description": "Id of the item details.",
+            "minLength": 1,
+            "default": ""
+          },
+          "os": {
+            "type": "string",
+            "title": "OS",
+            "description": "The operating system identifier."
           },
           "matchName": {
             "type": "string",
@@ -318,92 +346,82 @@
             "description": "A HTTP URL providing related information."
           },
           "versionRange": {
-            "type": "array",
-            "title": "Versions",
-            "description": "The list of impacted versions.",
-            "default": [],
-            "items": {
-              "type": "object",
-              "title": "Version range",
-              "description": "Version range",
-              "additionalProperties": false,
-              "required": [
-                "minVersion",
-                "maxVersion",
-                "severity"
-              ],
-              "default": {
+            "type": "object",
+            "title": "Version range",
+            "description": "Version range",
+            "additionalProperties": false,
+            "required": [
+              "severity"
+            ],
+            "default": {
+              "minVersion": "",
+              "maxVersion": "",
+              "severity": "0",
+              "vulnerabilityStatus": "",
+              "targetApplication": {
+                "id": "",
                 "minVersion": "",
-                "maxVersion": "",
-                "severity": "0",
-                "vulnerabilityStatus": "",
-                "targetApplication": {
-                  "id": "",
-                  "minVersion": "",
-                  "maxVersion": ""
-                }
+                "maxVersion": ""
+              }
+            },
+            "properties": {
+              "minVersion": {
+                "type": "string",
+                "title": "Min version",
+                "description": "The mininum version."
               },
-              "properties": {
-                "minVersion": {
-                  "type": "string",
-                  "title": "Min version",
-                  "description": "The mininum version."
-                },
-                "maxVersion": {
-                  "type": "string",
-                  "title": "Max version",
-                  "description": "The maximum version.",
-                  "default": ""
-                },
-                "severity": {
-                  "type": "string",
-                  "title": "Severity",
-                  "description": "The severity code number.",
-                  "enum": [
-                    "0",
-                    "1",
-                    "2",
-                    "3"
-                  ],
-                  "default": "0"
-                },
-                "vulnerabilityStatus": {
-                  "type": "string",
-                  "title": "Vulnerability status",
-                  "description": "The vulnerability status code number.",
-                  "enum": [
-                    "",
-                    "1",
-                    "2"
-                  ],
-                  "default": ""
-                },
-                "targetApplication": {
-                  "type": "object",
-                  "title": "Target application",
-                  "description": "The target application information.",
-                  "additionalProperties": false,
-                  "required": [
-                    "id",
-                    "minVersion",
-                    "maxVersion"
-                  ],
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "title": "Application id",
-                      "description": "The application unique identifier."
-                    },
-                    "minVersion": {
-                      "type": "string",
-                      "title": "Min version",
-                      "description": "The mininum version."
-                    },
-                    "maxVersion": {
-                      "type": "string",
-                      "title": "Max version",
-                      "description": "The maximum version."
-                    }
+              "maxVersion": {
+                "type": "string",
+                "title": "Max version",
+                "description": "The maximum version.",
+                "default": ""
+              },
+              "severity": {
+                "type": "string",
+                "title": "Severity",
+                "description": "The severity code number.",
+                "enum": [
+                  "0",
+                  "1",
+                  "2",
+                  "3"
+                ],
+                "default": "0"
+              },
+              "vulnerabilityStatus": {
+                "type": "string",
+                "title": "Vulnerability status",
+                "description": "The vulnerability status code number.",
+                "enum": [
+                  "",
+                  "1",
+                  "2"
+                ],
+                "default": ""
+              },
+              "targetApplication": {
+                "type": "object",
+                "title": "Target application",
+                "description": "The target application information.",
+                "additionalProperties": false,
+                "required": [
+                  "id"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "title": "Application id",
+                    "description": "The application unique identifier."
+                  },
+                  "minVersion": {
+                    "type": "string",
+                    "title": "Min version",
+                    "description": "The mininum version."
+                  },
+                  "maxVersion": {
+                    "type": "string",
+                    "title": "Max version",
+                    "description": "The maximum version."
                   }
                 }
               }
