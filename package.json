@@ -5,7 +5,7 @@
   "scripts": {
     "build": "kinto-admin build -c amo-blocklist.json -d build",
     "publish": "npm run build && gh-pages --dist build/",
-    "start": "kinto-admin serve -c config/config.json",
+    "start": "kinto-admin serve -c amo-blocklist.json",
     "test": "echo \"Tested in kinto-admin.\""
   },
   "dependencies": {
