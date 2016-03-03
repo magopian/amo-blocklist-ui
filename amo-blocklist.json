@@ -136,6 +136,51 @@
                 }
               }
             }
+          },
+          "explanations": {
+            "type": "array",
+            "title": "Explanations",
+            "description": "Localized explanations.",
+            "default": [],
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["name", "why"],
+              "default": {
+                "lang": "en-US",
+                "name": "",
+                "who": "",
+                "bug": ""
+              },
+              "properties": {
+                "lang": {
+                  "type": "string",
+                  "title": "Locale",
+                  "description": "Locale ID.",
+                  "pattern": "^[a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?$"
+                },
+                "name": {
+                  "type": "string",
+                  "title": "Name",
+                  "description": "Addon name"
+                },
+                "why": {
+                  "type": "string",
+                  "title": "Why",
+                  "description": "Main reason"
+                },
+                "who": {
+                  "type": "string",
+                  "title": "Who",
+                  "description": "Affected users"
+                },
+                "bug": {
+                  "type": "string",
+                  "title": "Bug",
+                  "description": "Link to bug"
+                }
+              }
+            }
           }
         }
       }
@@ -405,6 +450,51 @@
                       "description": "The maximum version."
                     }
                   }
+                }
+              }
+            }
+          },
+          "explanations": {
+            "type": "array",
+            "title": "Explanations",
+            "description": "Localized explanations.",
+            "default": [],
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["name", "why"],
+              "default": {
+                "lang": "en-US",
+                "name": "",
+                "who": "",
+                "bug": ""
+              },
+              "properties": {
+                "lang": {
+                  "type": "string",
+                  "title": "Locale",
+                  "description": "Locale ID.",
+                  "pattern": "^[a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?$"
+                },
+                "name": {
+                  "type": "string",
+                  "title": "Name",
+                  "description": "Plugin name"
+                },
+                "why": {
+                  "type": "string",
+                  "title": "Why",
+                  "description": "Main reason"
+                },
+                "who": {
+                  "type": "string",
+                  "title": "Who",
+                  "description": "Affected users"
+                },
+                "bug": {
+                  "type": "string",
+                  "title": "Bug",
+                  "description": "Link to bug"
                 }
               }
             }
