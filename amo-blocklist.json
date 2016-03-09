@@ -15,7 +15,7 @@
         "default": {
           "addonId": "",
           "prefs": [],
-          "versionRange": []
+          "versionRange": [{}]
         },
         "properties": {
           "enabled": {
@@ -288,7 +288,7 @@
           "matchFilename": "",
           "matchDescription": "",
           "infoURL": "",
-          "versionRange": []
+          "versionRange": [{}]
         },
         "properties": {
           "enabled": {
