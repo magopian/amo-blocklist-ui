@@ -1,12 +1,12 @@
 {
-  "addons": {
-    "name": "addons",
+  "add-ons": {
+    "name": "add-ons",
     "synced": true,
     "config": {
       "displayFields": ["enabled", "addonId"],
       "schema": {
-        "title": "Addon",
-        "description": "Addon",
+        "title": "Add-on",
+        "description": "Add-on",
         "type": "object",
         "additionalProperties": false,
         "required": [
@@ -26,8 +26,8 @@
           },
           "addonId": {
             "type": "string",
-            "title": "Addon id",
-            "description": "The addon unique identifier.",
+            "title": "Add-on id",
+            "description": "The add-on unique identifier.",
             "minLength": 1,
             "default": ""
           },
