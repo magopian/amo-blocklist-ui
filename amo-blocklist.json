@@ -202,6 +202,7 @@
           "feature": "",
           "featureStatus": "",
           "driverVersion": "",
+          "driverVersionMax": "",
           "driverVersionComparator": ""
         },
         "properties": {
@@ -250,6 +251,11 @@
           "driverVersion": {
             "type": "string",
             "title": "Driver version",
+            "description": "The driver version."
+          },
+          "driverVersionMax": {
+            "type": "string",
+            "title": "Driver version max",
             "description": "The driver version."
           },
           "driverVersionComparator": {
