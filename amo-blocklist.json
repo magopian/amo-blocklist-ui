@@ -193,7 +193,6 @@
         "required": [
           "os",
           "vendor",
-          "feature",
           "featureStatus"
         ],
         "default": {
