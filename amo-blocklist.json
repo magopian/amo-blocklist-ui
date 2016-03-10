@@ -3,7 +3,7 @@
     "name": "add-ons",
     "synced": true,
     "config": {
-      "displayFields": ["enabled", "addonId"],
+      "displayFields": ["enabled", "addonId", "os"],
       "schema": {
         "title": "Add-on",
         "description": "Add-on",
@@ -14,6 +14,7 @@
         ],
         "default": {
           "addonId": "",
+          "os": "",
           "prefs": [],
           "versionRange": [{}]
         },
@@ -30,6 +31,11 @@
             "description": "The add-on unique identifier.",
             "minLength": 1,
             "default": ""
+          },
+          "os": {
+            "type": "string",
+            "title": "OS",
+            "description": "The operating system identifier."
           },
           "prefs": {
             "type": "array",
@@ -274,7 +280,7 @@
     "name": "plugins",
     "synced": true,
     "config": {
-      "displayFields": ["enabled", "matchName", "matchFilename", "matchDescription"],
+      "displayFields": ["enabled", "os", "matchName", "matchFilename", "matchDescription"],
       "schema": {
         "title": "Plugin",
         "description": "A blocked plugin entry.",
@@ -284,6 +290,7 @@
           "versionRange"
         ],
         "default": {
+          "os": "",
           "matchName": "",
           "matchFilename": "",
           "matchDescription": "",
@@ -296,6 +303,11 @@
             "title": "Enabled",
             "description": "blocking rule is enabled.",
             "default": false
+          },
+          "os": {
+            "type": "string",
+            "title": "OS",
+            "description": "The operating system identifier."
           },
           "matchName": {
             "type": "string",
