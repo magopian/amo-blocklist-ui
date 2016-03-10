@@ -64,12 +64,7 @@
                 "minVersion": "",
                 "maxVersion": "",
                 "severity": "0",
-                "vulnerabilityStatus": "",
-                "targetApplication": {
-                  "id": "",
-                  "minVersion": "",
-                  "maxVersion": ""
-                }
+                "vulnerabilityStatus": ""
               },
               "properties": {
                 "minVersion": {
@@ -107,30 +102,36 @@
                   "default": ""
                 },
                 "targetApplication": {
-                  "type": "object",
-                  "title": "Target application",
-                  "description": "The target application information.",
-                  "additionalProperties": false,
-                  "required": [
-                    "id",
-                    "minVersion",
-                    "maxVersion"
-                  ],
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "title": "Application id",
-                      "description": "The application unique identifier."
-                    },
-                    "minVersion": {
-                      "type": "string",
-                      "title": "Min version",
-                      "description": "The mininum version."
-                    },
-                    "maxVersion": {
-                      "type": "string",
-                      "title": "Max version",
-                      "description": "The maximum version."
+                  "type": "array",
+                  "title": "Target applications",
+                  "description": "The list of target application information.",
+                  "default": [],
+                  "items": {
+                    "type": "object",
+                    "title": "Target application",
+                    "description": "Target application",
+                    "additionalProperties": false,
+                    "required": [
+                      "id",
+                      "minVersion",
+                      "maxVersion"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "title": "Application id",
+                        "description": "The application unique identifier."
+                      },
+                      "minVersion": {
+                        "type": "string",
+                        "title": "Min version",
+                        "description": "The mininum version."
+                      },
+                      "maxVersion": {
+                        "type": "string",
+                        "title": "Max version",
+                        "description": "The maximum version."
+                      }
                     }
                   }
                 }
@@ -336,12 +337,7 @@
                 "minVersion": "",
                 "maxVersion": "",
                 "severity": "0",
-                "vulnerabilityStatus": "",
-                "targetApplication": {
-                  "id": "",
-                  "minVersion": "",
-                  "maxVersion": ""
-                }
+                "vulnerabilityStatus": ""
               },
               "properties": {
                 "minVersion": {
@@ -379,30 +375,36 @@
                   "default": ""
                 },
                 "targetApplication": {
-                  "type": "object",
-                  "title": "Target application",
-                  "description": "The target application information.",
-                  "additionalProperties": false,
-                  "required": [
-                    "id",
-                    "minVersion",
-                    "maxVersion"
-                  ],
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "title": "Application id",
-                      "description": "The application unique identifier."
-                    },
-                    "minVersion": {
-                      "type": "string",
-                      "title": "Min version",
-                      "description": "The mininum version."
-                    },
-                    "maxVersion": {
-                      "type": "string",
-                      "title": "Max version",
-                      "description": "The maximum version."
+                  "type": "array",
+                  "title": "Target applications",
+                  "description": "The list of target application information.",
+                  "default": [],
+                  "items": {
+                    "type": "object",
+                    "title": "Target application",
+                    "description": "Target application",
+                    "additionalProperties": false,
+                    "required": [
+                      "id",
+                      "minVersion",
+                      "maxVersion"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "title": "Application id",
+                        "description": "The application unique identifier."
+                      },
+                      "minVersion": {
+                        "type": "string",
+                        "title": "Min version",
+                        "description": "The mininum version."
+                      },
+                      "maxVersion": {
+                        "type": "string",
+                        "title": "Max version",
+                        "description": "The maximum version."
+                      }
                     }
                   }
                 }
